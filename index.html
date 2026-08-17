@@ -357,16 +357,28 @@
               <h3 class="booking-h">Pick a time</h3>
               <p class="block-sub">Newcastle time. Each session runs for one hour. Nothing is charged now &mdash; we'll confirm by email first.</p>
  
-              <div id="slot-list" class="slot-list">
-                <!-- Filled in by js/booking.js. The hidden option below must
-                     stay: Netlify only registers form fields it can see in
-                     the HTML at deploy time, so without it the chosen time
-                     wouldn't come through. -->
-                <label class="time-chip" hidden>
-                  <input type="radio" name="session" value="" /><span>&mdash;</span>
-                </label>
-                <p class="slots-loading">Loading times&hellip;</p>
+              <!-- Two dropdowns, filled in by js/booking.js. They carry no
+                   name attribute on purpose, so nothing extra is submitted —
+                   the chosen session goes through as the hidden field below,
+                   which has to stay in the markup because Netlify only
+                   registers fields it can see at deploy time. -->
+              <div id="picker" class="field-row picker-row">
+                <div class="field">
+                  <label for="session-date">Date</label>
+                  <select id="session-date" required>
+                    <option value="">Loading&hellip;</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="session-time">Time</label>
+                  <select id="session-time" required disabled>
+                    <option value="">Pick a date first</option>
+                  </select>
+                </div>
               </div>
+              <input type="hidden" name="session" id="session-value" />
+              <p id="session-summary" class="session-summary" hidden></p>
+              <p id="slots-empty" class="slots-empty" hidden></p>
  
               <p class="mode-nudge">None of these suit? <label for="mode-waitlist" class="mode-link">Join the waitlist instead</label> and we'll let you know when something opens up.</p>
             </div>
