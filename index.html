@@ -1,0 +1,351 @@
+<!doctype html>
+<!--
+  ═══════════════════════════════════════════════════════════════════════════
+  BEFORE YOU RUN ADS: search this file for [[ and replace every placeholder.
+  The full list is in README.md under "Before you publish".
+  ═══════════════════════════════════════════════════════════════════════════
+-->
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tabletop Teachings | Taking Learning on an Adventure</title>
+  <meta name="author" content="Tabletop Teachings" />
+  <meta name="description" content="Small-group Dungeons &amp; Dragons campaigns for kids aged 8–18 in [[SUBURB]]. Every session is built around reading, writing and speaking goals. All dice, sheets and books provided. Spots open now." />
+  <link rel="canonical" href="https://tabletopteachings.com/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Tabletop Teachings" />
+  <meta property="og:url" content="https://tabletopteachings.com/" />
+  <meta property="og:title" content="D&amp;D Clubs for Kids That Build Reading &amp; Confidence" />
+  <meta property="og:description" content="Small-group D&amp;D campaigns for ages 8–18, written around real reading, writing and speaking goals. All equipment provided." />
+  <meta property="og:image" content="https://tabletopteachings.com/assets/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Tabletop Teachings — D&amp;D adventures that teach reading, writing and confidence." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="D&amp;D Clubs for Kids That Build Reading &amp; Confidence" />
+  <meta name="twitter:description" content="Small-group D&amp;D campaigns for ages 8–18, written around real reading, writing and speaking goals." />
+  <meta name="twitter:image" content="https://tabletopteachings.com/assets/og-image.png" />
+  <meta name="theme-color" content="#f6efe2" />
+
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+
+  <!-- Critical, above-the-fold CSS inlined so the page paints without
+       waiting on any network request. The full stylesheet below fills in
+       everything else once it arrives; values here are kept in sync with
+       css/style.css. -->
+  <style>
+    :root{--background:oklch(0.968 0.018 85);--foreground:oklch(0.245 0.032 60);--card:oklch(0.985 0.012 88);--secondary:oklch(0.955 0.024 88);--secondary-foreground:oklch(0.36 0.05 62);--primary:oklch(0.72 0.16 68);--primary-foreground:oklch(0.99 0.006 90);--accent:oklch(0.63 0.19 18);--accent-foreground:oklch(0.99 0.006 90);--muted:oklch(0.955 0.014 90);--muted-foreground:oklch(0.53 0.028 70);--border:oklch(0.9 0.026 84);--quest-3:oklch(0.72 0.14 158);--radius-2xl:3rem;--font-display:"Fredoka",system-ui,sans-serif;--font-body:"Quicksand",system-ui,sans-serif}
+    *,*::before,*::after{box-sizing:border-box}
+    body{margin:0;background-color:var(--background);color:var(--foreground);font-family:var(--font-body);-webkit-font-smoothing:antialiased;padding-bottom:4.75rem}
+    h1,h2,h3{font-family:var(--font-display);letter-spacing:.01em;margin:0}
+    p{margin:0}a{color:inherit;text-decoration:none}
+    .container{width:100%;max-width:64rem;margin-inline:auto;padding:3rem 1.5rem}
+    .site-nav .container{padding-block:0}
+    .min-h-screen{min-height:100vh}
+    .eyebrow{display:inline-block;margin-bottom:1.25rem;border-radius:9999px;background:var(--primary);color:var(--primary-foreground);padding:.25rem 1rem;font-size:.875rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+    .site-nav{position:sticky;top:0;z-index:50;border-bottom:4px dotted color-mix(in oklab,var(--primary) 30%,transparent);background:color-mix(in oklab,var(--background) 90%,transparent);backdrop-filter:blur(6px)}
+    .site-nav .container{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;padding-block:1rem}
+    .brand{display:flex;align-items:center;gap:.5rem}
+    .brand-mark{display:flex;align-items:center;justify-content:center;width:2.25rem;height:2.25rem;border-radius:.75rem;background:var(--primary)}
+    .brand-mark span{width:1rem;height:1rem;transform:rotate(45deg);border-radius:3px;border:2px solid var(--primary-foreground)}
+    .brand-name{font-family:var(--font-display);font-size:1.25rem;color:var(--primary)}
+    .nav-links{display:flex;align-items:center;gap:.25rem;font-size:.875rem;font-weight:700;color:var(--secondary-foreground)}
+    .nav-links a{border-radius:9999px;padding:.375rem .75rem;transition:background-color .15s ease}
+    .nav-links a:hover,.nav-links a[aria-current="page"]{background:var(--muted)}
+    .nav-cta{border-radius:9999px;background:var(--accent);color:var(--accent-foreground)!important;padding:.375rem 1rem}
+    .btn{display:inline-block;cursor:pointer;border-radius:1rem;padding:1rem 2.5rem;font-family:var(--font-display);font-size:1.25rem}
+    .btn-accent{background:var(--accent);color:var(--accent-foreground);box-shadow:0 6px 0 0 color-mix(in oklab,var(--accent) 60%,black)}
+    .btn-ghost{background:transparent;color:var(--secondary-foreground);border:3px solid color-mix(in oklab,var(--primary) 45%,transparent);font-size:1.0625rem;padding:.875rem 1.75rem}
+    .hero{margin-bottom:2rem;border-radius:var(--radius-2xl);border:4px dashed color-mix(in oklab,var(--primary) 40%,transparent);background:var(--secondary);padding:2.5rem 1.5rem;text-align:center}
+    .hero h1{margin-bottom:1.5rem;font-size:2.5rem;line-height:1.15;color:var(--primary)}
+    .hero p{margin-inline:auto;margin-bottom:2rem;max-width:42rem;font-size:1.25rem;line-height:1.6;color:var(--secondary-foreground)}
+    .hero-actions{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.875rem;margin-bottom:1.5rem}
+    .hero-reassure{font-size:.9375rem!important;font-weight:600;margin-bottom:0!important;color:var(--muted-foreground)!important}
+    .trust-strip{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;margin:0 0 2.5rem;padding:0}
+    .trust-chip{display:inline-flex;align-items:center;gap:.4rem;border-radius:9999px;border:2px solid var(--border);background:var(--card);padding:.4rem .9rem;font-size:.8125rem;font-weight:700;color:var(--secondary-foreground)}
+    .trust-chip::before{content:"";width:.5rem;height:.5rem;border-radius:9999px;background:var(--quest-3)}
+    @media (max-width:640px){.nav-links .nav-scroll-link{display:none}.nav-links{gap:.5rem}.hero h1{font-size:2rem}.trust-chip{font-size:.75rem;padding:.35rem .7rem}}@media (min-width:768px){body{padding-bottom:0}.hero{padding:3.5rem}.hero h1{font-size:3.75rem}.hero p{font-size:1.375rem}}
+  </style>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- Fonts and the full stylesheet load async (preload → swap to stylesheet
+       on load) so they never block first paint. -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+  <link rel="preload" as="style" href="css/style.css" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="css/style.css" />
+  </noscript>
+
+  <!-- ═══ ANALYTICS ═══════════════════════════════════════════════════════
+       Paste your Google Analytics 4 / Google Ads / Meta Pixel tag here.
+       js/track.js below sends a "generate_lead" event to whichever of these
+       exists when someone clicks a booking link — you don't need to edit it.
+       GA4 example (replace G-XXXXXXX):
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXX');
+  </script>
+       ═══════════════════════════════════════════════════════════════════ -->
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": "https://tabletopteachings.com/#business",
+    "name": "Tabletop Teachings",
+    "description": "Small-group Dungeons & Dragons campaigns for children and teenagers, built around reading, writing and social communication goals.",
+    "url": "https://tabletopteachings.com/",
+    "image": "https://tabletopteachings.com/assets/og-image.png",
+    "email": "[[EMAIL]]",
+    "telephone": "[[PHONE]]",
+    "priceRange": "$$",
+    "areaServed": { "@type": "City", "name": "[[SUBURB]]" },
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "[[SUBURB]]",
+      "addressRegion": "NSW",
+      "addressCountry": "AU"
+    },
+    "audience": { "@type": "PeopleAudience", "suggestedMinAge": 8, "suggestedMaxAge": 18 }
+  }
+  </script>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <div class="min-h-screen">
+    <nav class="site-nav">
+      <div class="container" style="padding-block: 1rem;">
+        <a href="#top" class="brand">
+          <span class="brand-mark" aria-hidden="true"><span></span></span>
+          <span class="brand-name">Tabletop Teachings</span>
+        </a>
+        <div class="nav-links">
+          <a href="#how-it-works" class="nav-scroll-link">How It Works</a>
+          <a href="#live-quests">Adventures</a>
+          <a href="#pricing" class="nav-scroll-link">Pricing</a>
+          <a href="#contact" class="nav-cta" data-track-cta="nav">Join an Adventure</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <header id="top" class="hero">
+        <h1>Taking learning on an adventure</h1>
+        <p>Tabletop Teachings brings adventure to your door. In person, at home tutoring for reading, writing and drama skills taught with a fun first philosophy. A segment of our sessions is Dungeons and Dragons gameplay specially designed to activate our students passion for learning.</p>
+        <div class="hero-actions">
+          <a href="#contact" class="btn btn-accent" data-track-cta="hero">Join an Adventure</a>
+          <a href="#how-it-works" class="btn btn-ghost">See how a session runs</a>
+        </div>
+        <p class="hero-reassure">Takes two minutes. We reply within 24 hours.</p>
+      </header>
+
+      <main id="main">
+        <!-- ═══ How a session runs ═══════════════════════════════════════ -->
+        <section id="how-it-works" class="section">
+          <h2 class="section-title">What actually happens in a session</h2>
+          <div class="session-layout">
+            <ol class="runsheet">
+              <li>
+              </li>
+              <li>
+                <h3>Play</h3>
+                <p>Create a character pilot them through adventures, conversations and puzzles</p>
+              </li>
+              <li>
+                <h3>Discuss</h3>
+                <p>Link gameplay to the students personalised learning goals helping them become a more confident speaker, increasing reading proficiency or creating their own worlds.</p>
+              </li>
+              <li>
+                <h3>Create</h3>
+                <p>Writing letters to other charatcers, learning the literary techniques behind the story , using all the learnt skills to create your own worlds and adventures</p>
+              </li>
+              <li>
+                <span class="runsheet-time">After</span>
+                <h3>You get the update</h3>
+                <p>personalised learning outcomes tracking your students progression</p>
+              </li>
+            </ol>
+
+            <aside class="runsheet-aside">
+              <h3>What's included</h3>
+              <ul>
+                <li>Dice, character sheets, miniatures and rulebooks</li>
+                <li>A campaign written for your child's group, not pulled off a shelf</li>
+                <li>Take-home reading passages, journals and writing prompts</li>
+                <li>A personalised learning record shared with you as the story unfolds</li>
+                <li>A passionate Game Master with experience and holds a current Working With Children Check</li>
+              </ul>
+            </aside>
+          </div>
+        </section>
+
+        <!-- ═══ Live adventures — cards expand in place ══════════════════ -->
+        <section id="live-quests" class="section">
+          <h2 class="section-title">Adventures In Progress</h2>
+          <p class="section-sub">Real campaigns, running right now. Tap a quest to see its world, its characters and the skills the party is working on.</p>
+          <div id="home-quests-grid" class="campaign-switcher"></div>
+          <p class="section-cta-wrap">
+            <a href="#contact" class="section-cta" data-track-cta="quests-section">Join an Adventure &rarr;</a>
+          </p>
+        </section>
+
+        <!-- ═══ Pricing ══════════════════════════════════════════════════
+             The Solo / Small group switch is pure CSS: two radio inputs
+             followed by labels, and `:checked ~` rules in style.css hide the
+             prices for the other mode. No JavaScript, so it can't break.
+             To edit a price, change BOTH the .for-group and .for-solo
+             version of that card.
+        ══════════════════════════════════════════════════════════════════ -->
+       <section id="pricing" class="section">
+  <h2 class="section-title">What It Costs</h2>
+  <p class="section-sub">No joining fee or equipment to buy. Single Sessions refunded with 24hrs notice.</p>
+  <input type="radio" name="pricing-mode" id="mode-solo" class="pricing-radio" />
+  <div class="pricing-toggle" role="radiogroup" aria-label="Session type">
+  </div>
+  <div class="pricing-grid">
+    <article class="price-card is-featured">
+      <span class="price-flag">Great starting point</span>
+      <h3>Single Session</h3>
+      <p class="price-desc for-solo">Try a one-on-one session before committing to a campaign.</p>
+      <p class="price-amount for-solo">$60 <span class="price-unit">per session</span></p>
+      <p class="price-note for-solo">1 hour &middot; one-on-one with the DM</p>
+      <ul class="price-list">
+        <li>All equipment provided</li>
+        <li>Take-home resource</li>
+        <li class="for-solo">Pace set entirely by your child</li>
+      </ul>
+      <a href="#contact" class="btn btn-accent btn-block" data-track-cta="pricing-single">Join an Adventure</a>
+    </article>
+    <article class="price-card">
+      <h3>Continuous Adventure</h3>
+      <p class="price-desc for-solo">A session every week where the fun can continue and learning compounds</p>
+      <p class="price-amount for-solo">$50 <span class="price-unit">per session</span></p>
+      <p class="price-note for-solo">$200 per month &middot; 4 sessions &middot; 1hr each</p>
+      <ul class="price-list">
+        <li class="for-solo">Learning and gameplay adapt to the students needs</li>
+        <li>Personalised learning record</li>
+        <li>Weekly take-home materials</li>
+        <li>Progress updates for parents</li>
+      </ul>
+      <a href="#contact" class="btn btn-accent btn-block" data-track-cta="pricing-term">Join an Adventure</a>
+    </article>
+    <article class="price-card">
+      <h3>Group Waitlist</h3>
+      <p class="price-desc">Join the waitlist, tell us what type of adventure you want and we will let you know when a table opens up</p>
+      <ul class="price-list">
+        <li>Be first in line</li>
+        <li>Have direct impact on the story creation</li>
+      </ul>
+      <a href="#contact" class="btn btn-blue" data-track-cta="pricing-schools">Join the Waitlist</a>
+    </article>
+  </div>
+  <p class="pricing-footnote">Sibling and concession rates are available.</p>
+</section>
+        <!--
+          ═══ TESTIMONIALS ══════════════════════════════════════════════════
+          This is the single highest-value thing you can add to this page.
+          Ask two or three current families for a sentence, get their written
+          OK, then delete these comment markers and fill in the blanks.
+          Use first name + child's year level only (e.g. "Sarah, parent of a
+          Year 4 player"). Never use a child's full name.
+
+        <section id="reviews" class="section">
+          <h2 class="section-title">What Families Say</h2>
+          <div class="audience-grid">
+            <article class="audience-card tone-quest-4">
+              <span class="audience-quote">&ldquo;[Quote from a parent.]&rdquo;</span>
+              <p>&mdash; [First name], parent of a [Year X] player</p>
+            </article>
+            <article class="audience-card tone-quest-2">
+              <span class="audience-quote">&ldquo;[Quote from a parent.]&rdquo;</span>
+              <p>&mdash; [First name], parent of a [Year X] player</p>
+            </article>
+            <article class="audience-card tone-quest-6">
+              <span class="audience-quote">&ldquo;[Quote from a parent.]&rdquo;</span>
+              <p>&mdash; [First name], parent of a [Year X] player</p>
+            </article>
+          </div>
+        </section>
+          ═══════════════════════════════════════════════════════════════════
+        -->
+
+        <!-- ═══ FAQ ══════════════════════════════════════════════════════ -->
+        <section id="faq" class="section">
+          <h2 class="section-title">Frequently Asked Questions</h2>
+          <div class="faq-list">
+            <details class="faq-item">
+              <summary>What are our credentials?</summary>
+              <p>All of our Game Masters have valid current Working with Children Checks, First aid + CPR and experience working with children.</p>
+            </details>
+            <details class="faq-item">
+              <summary>My child has never played D&amp;D. Will they be lost?</summary>
+              <p>Nope! Our sessions are designed agnostic of the students experience and tailored to their learning goals</p>
+            </details>
+            <details class="faq-item">
+              <summary>Where and when do sessions run?</summary>
+              <p>We bring the learning to you, sessions run in your home no equipment required.</p>
+            </details>
+            <details class="faq-item">
+              <summary>Isn't this just a games club with a label on it?</summary>
+              <p>Every campaign starts with a written list of reading, writing and social objectives for that group &mdash; open any quest in <a href="#live-quests" style="text-decoration: underline;">Adventures In Progress</a> and check the Learning tab. Objectives are ticked off only when a player actually demonstrates them at the table, and you get a record of your own child's progress, not just the party's.</p>
+            </details>
+            <details class="faq-item">
+              <summary>What ages do you teach?</summary>
+              <p>Ages 8 to 18.</p>
+            </details>
+            <details class="faq-item">
+              <summary>Do I have to commit to a whole term?</summary>
+              <p>Nope! You can book a single session first and expand to a full term at anytime. </p>
+            </details>
+            <details class="faq-item">
+              <summary>Is D&amp;D too dark or scary for young kids?</summary>
+              <p>Nope! Our stories are designed specifically for the age groups that engage with them. Our Game Masters are always ready to talk to parents and students to keep the story and learnings within expectations.</p>
+            </details>
+            <details class="faq-item">
+              <summary>Can you run sessions for our school or service?</summary>
+              <p>Yes. We offer on-site sessions for schools, libraries, OOSH programs and support services, mapped to your literacy goals with written reporting on request. Use the form below and mention your organisation.</p>
+            </details>
+          </div>
+        </section>
+
+        <!-- ═══ Closing CTA ══════════════════════════════════════════════ -->
+        <section id="contact" class="section cta-band" style="margin-bottom: 0;">
+          <h2>Ready to begin your adventure?</h2>
+          <p>Tell us about your young adventurer &mdash; their age, their interests, and what you'd like them to get better at. We'll tell you honestly whether we've got the right table for them.</p>
+          <a href="https://forms.gle/FaDSAM434s5T8QVz7" target="_blank" rel="noopener noreferrer" class="btn btn-accent" data-track-cta="footer-form">Join an Adventure</a>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <p class="footer-links">
+          <a href="#how-it-works">How It Works</a>
+          <a href="#live-quests">Adventures</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#faq">FAQ</a>
+        </p>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Sticky CTA for phones, where most ad traffic lands. -->
+  <div class="mobile-cta">
+    <p>Spots open now in Newcastle</p>
+    <a href="#contact" class="btn btn-accent" data-track-cta="mobile-sticky">Join an Adventure</a>
+  </div>
+
+  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+  <script src="js/adventures-data.js"></script>
+  <script src="js/quests.js"></script>
+  <script src="js/track.js"></script>
+</body>
+</html>

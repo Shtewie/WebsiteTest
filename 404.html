@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Page not found | Tabletop Teachings</title>
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  <style>
+    :root{--background:oklch(0.968 0.018 85);--foreground:oklch(0.245 0.032 60);--primary:oklch(0.72 0.16 68);--primary-foreground:oklch(0.99 0.006 90);--accent:oklch(0.63 0.19 18);--accent-foreground:oklch(0.99 0.006 90);--muted:oklch(0.955 0.014 90);--muted-foreground:oklch(0.53 0.028 70);--card:oklch(0.985 0.012 88);--radius-xl:2.5rem;--shadow-parchment:0 10px 30px -16px color-mix(in oklab,oklch(0.4 0.06 60) 45%,transparent);--font-display:"Fredoka",system-ui,sans-serif;--font-body:"Quicksand",system-ui,sans-serif}
+    *,*::before,*::after{box-sizing:border-box}
+    body{margin:0;background-color:var(--background);color:var(--foreground);font-family:var(--font-body);-webkit-font-smoothing:antialiased}
+    h1,h2,h3{font-family:var(--font-display);letter-spacing:.01em;margin:0}
+    p{margin:0}a{color:inherit;text-decoration:none}
+    .min-h-screen{min-height:100vh}
+    .eyebrow{display:inline-block;margin-bottom:1.25rem;border-radius:9999px;background:var(--primary);color:var(--primary-foreground);padding:.25rem 1rem;font-size:.875rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+    .contact-card{position:relative;overflow:hidden;max-width:36rem;margin-inline:auto;border-radius:var(--radius-xl);border:4px solid var(--muted);background:var(--card);padding:2.5rem 1.5rem;text-align:center;box-shadow:var(--shadow-parchment)}
+    .btn{display:inline-block;cursor:pointer;border-radius:1rem;padding:1rem 2.5rem;font-family:var(--font-display);font-size:1.25rem}
+    .btn-accent{background:var(--accent);color:var(--accent-foreground);box-shadow:0 6px 0 0 color-mix(in oklab,var(--accent) 60%,black)}
+    .lost-links{display:flex;flex-wrap:wrap;justify-content:center;gap:.35rem 1.25rem;margin-top:2rem;font-size:.9375rem;font-weight:700;color:var(--muted-foreground)}
+    .lost-links a:hover{text-decoration:underline}
+  </style>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" />
+  </noscript>
+</head>
+<body>
+  <div class="min-h-screen" style="display: flex; align-items: center; justify-content: center; padding: 1.5rem;">
+    <div class="contact-card">
+      <span class="eyebrow">Off the Map</span>
+      <h2 style="margin-bottom: 1rem;">This page doesn't exist</h2>
+      <p style="margin-bottom: 2rem; line-height: 1.6; color: var(--muted-foreground);">
+        Looks like this quest hasn't been written yet. Let's get you back to the tavern.
+      </p>
+      <a href="/" id="home-link" class="btn btn-accent">Return home</a>
+      <p class="lost-links">
+        <a href="/#how-it-works" data-base>How it works</a>
+        <a href="/#live-quests" data-base>Adventures</a>
+        <a href="/#pricing" data-base>Pricing</a>
+        <a href="/#contact" data-base>Ask about a spot</a>
+      </p>
+    </div>
+  </div>
+  <script>
+    /* On a GitHub Pages project site the whole site lives under
+       /repo-name/, so a link to "/" leaves the site entirely. Work out the
+       base path at runtime — this is a no-op on a custom domain. */
+    (function () {
+      var parts = location.pathname.split("/").filter(Boolean);
+      var base = location.hostname.endsWith("github.io") && parts.length ? "/" + parts[0] + "/" : "/";
+      var home = document.getElementById("home-link");
+      if (home) home.setAttribute("href", base);
+      document.querySelectorAll("[data-base]").forEach(function (a) {
+        a.setAttribute("href", base + a.getAttribute("href").replace(/^\//, ""));
+      });
+    })();
+  </script>
+</body>
+</html>

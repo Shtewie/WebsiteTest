@@ -1,0 +1,1431 @@
+/* ==========================================================================
+   Tabletop Teachings — stylesheet
+   Plain CSS, no build step. Organised in sections:
+   1. Design tokens (colours, fonts)
+   2. Reset / base
+   3. Layout helpers
+   4. Components (nav, buttons, cards, hero, steps, footer)
+   5. Adventures page (campaign switcher, tabs, timeline, objectives)
+   6. Responsive tweaks
+   ========================================================================== */
+
+/* ---- 1. Design tokens ---------------------------------------------------- */
+:root {
+  --radius-sm: 0.75rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.5rem;
+  --radius-xl: 2.5rem;
+  --radius-2xl: 3rem;
+
+  --background: oklch(0.968 0.018 85);
+  --foreground: oklch(0.245 0.032 60);
+  --card: oklch(0.985 0.012 88);
+  --primary: oklch(0.72 0.16 68);
+  --primary-foreground: oklch(0.99 0.006 90);
+  --secondary: oklch(0.955 0.024 88);
+  --secondary-foreground: oklch(0.36 0.05 62);
+  --muted: oklch(0.955 0.014 90);
+  --muted-foreground: oklch(0.53 0.028 70);
+  --accent: oklch(0.63 0.19 18);
+  --accent-foreground: oklch(0.99 0.006 90);
+  --border: oklch(0.9 0.026 84);
+
+  /* Button blue. Darker than --quest-1 so white label text clears 4.5:1;
+     the quest tone is fine behind icons but not behind text. */
+  --blue: oklch(0.48 0.15 250);
+  --blue-foreground: oklch(0.99 0.006 90);
+
+  /* Quest tones: bold icon colour + soft card wash for each */
+  --quest-1: oklch(0.72 0.13 235);
+  --quest-1-soft: oklch(0.965 0.022 235);
+  --quest-2: oklch(0.65 0.16 300);
+  --quest-2-soft: oklch(0.965 0.022 300);
+  --quest-3: oklch(0.72 0.14 158);
+  --quest-3-soft: oklch(0.965 0.024 158);
+  --quest-4: oklch(0.74 0.15 55);
+  --quest-4-soft: oklch(0.965 0.026 62);
+  --quest-5: oklch(0.7 0.16 355);
+  --quest-5-soft: oklch(0.965 0.02 355);
+  --quest-6: oklch(0.62 0.16 275);
+  --quest-6-soft: oklch(0.965 0.022 275);
+
+  --font-display: "Fredoka", system-ui, sans-serif;
+  --font-body: "Quicksand", system-ui, sans-serif;
+  --shadow-parchment: 0 10px 30px -16px color-mix(in oklab, oklch(0.4 0.06 60) 45%, transparent);
+}
+
+/* ---- 2. Reset / base ------------------------------------------------------ */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+body {
+  margin: 0;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3 {
+  font-family: var(--font-display);
+  letter-spacing: 0.01em;
+  margin: 0;
+}
+p { margin: 0; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+img { max-width: 100%; display: block; }
+
+/* ---- 3. Layout helpers ---------------------------------------------------- */
+.container {
+  width: 100%;
+  max-width: 64rem; /* 1024px */
+  margin-inline: auto;
+  padding: 3rem 1.5rem;
+}
+.site-nav .container { padding-block: 0; }
+.min-h-screen { min-height: 100vh; }
+
+/* Visually hidden, still read by screen readers. Used by the objectives
+   list ("Completed:" / "Not yet completed:") and the skip link. Do not
+   delete — without it that text renders visibly on the page. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.skip-link {
+  position: absolute;
+  left: 0.5rem;
+  top: -4rem;
+  z-index: 100;
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  background: var(--accent);
+  color: var(--accent-foreground);
+  padding: 0.6rem 1rem;
+  font-weight: 700;
+  transition: top 0.15s ease;
+}
+.skip-link:focus { top: 0; }
+
+/* Global keyboard focus ring. */
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible {
+  outline: 3px solid var(--foreground);
+  outline-offset: 2px;
+}
+.eyebrow {
+  display: inline-block;
+  margin-bottom: 1.25rem;
+  border-radius: 9999px;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  padding: 0.25rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ---- 4. Nav ---------------------------------------------------------------- */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 4px dotted color-mix(in oklab, var(--primary) 30%, transparent);
+  background: color-mix(in oklab, var(--background) 90%, transparent);
+  backdrop-filter: blur(6px);
+}
+.site-nav .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding-block: 1rem;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.brand-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.75rem;
+  background: var(--primary);
+}
+.brand-mark span {
+  width: 1rem;
+  height: 1rem;
+  transform: rotate(45deg);
+  border-radius: 3px;
+  border: 2px solid var(--primary-foreground);
+}
+.brand-name {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  color: var(--primary);
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--secondary-foreground);
+}
+.nav-links a {
+  border-radius: 9999px;
+  padding: 0.375rem 0.75rem;
+  transition: background-color 0.15s ease;
+}
+.nav-links a:hover,
+.nav-links a[aria-current="page"] {
+  background: var(--muted);
+}
+.nav-cta {
+  border-radius: 9999px;
+  background: var(--accent);
+  color: var(--accent-foreground) !important;
+  padding: 0.375rem 1rem;
+  transition: transform 0.1s ease;
+}
+.nav-cta:active { transform: translateY(2px); }
+
+/* ---- Buttons --------------------------------------------------------------- */
+.btn {
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 1rem;
+  padding: 1rem 2.5rem;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  transition: all 0.1s ease;
+}
+.btn-accent {
+  background: var(--accent);
+  color: var(--accent-foreground);
+  box-shadow: 0 6px 0 0 color-mix(in oklab, var(--accent) 60%, black);
+}
+.btn-accent:active {
+  transform: translateY(4px);
+  box-shadow: none;
+}
+.btn-primary {
+  display: block;
+  width: 100%;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  font-size: 1.125rem;
+  box-shadow: 0 6px 0 0 color-mix(in oklab, var(--primary) 60%, black);
+}
+.btn-primary:active {
+  transform: translateY(4px);
+  box-shadow: none;
+}
+.btn-blue {
+  background: var(--blue);
+  color: var(--blue-foreground);
+  box-shadow: 0 6px 0 0 color-mix(in oklab, var(--blue) 60%, black);
+}
+.btn-blue:active {
+  transform: translateY(4px);
+  box-shadow: none;
+}
+
+/* ---- Hero -------------------------------------------------------------- */
+.hero {
+  margin-bottom: 5rem;
+  border-radius: var(--radius-2xl);
+  border: 4px dashed color-mix(in oklab, var(--primary) 40%, transparent);
+  background: var(--secondary);
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+}
+.hero h1 {
+  margin-bottom: 1.5rem;
+  font-size: 3rem;
+  line-height: 1.15;
+  color: var(--primary);
+}
+.hero p {
+  margin-inline: auto;
+  margin-bottom: 2rem;
+  max-width: 42rem;
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: var(--secondary-foreground);
+}
+
+/* ---- Section headings ---------------------------------------------------- */
+.section { margin-bottom: 6rem; scroll-margin-top: 6rem; }
+.section-title {
+  margin-bottom: 3rem;
+  text-align: center;
+  font-size: 1.875rem;
+  color: var(--secondary-foreground);
+}
+.section-title + .section-sub {
+  margin: -2rem auto 3rem;
+  max-width: 40rem;
+  text-align: center;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+}
+.section-cta-wrap { margin-top: 1.75rem; text-align: center; }
+.section-cta {
+  display: inline-block;
+  border-radius: 9999px;
+  background: var(--accent);
+  color: var(--accent-foreground);
+  padding: 0.625rem 1.5rem;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  transition: transform 0.1s ease;
+}
+.section-cta:active { transform: translateY(2px); }
+
+/* ---- Tenets / quest cards -------------------------------------------------- */
+.tenets-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+.tenet-card {
+  border-radius: var(--radius-lg);
+  border: 3px solid;
+  padding: 2rem;
+  transition: transform 0.15s ease;
+}
+.tenet-card:nth-child(odd):hover { transform: rotate(1deg); }
+.tenet-card:nth-child(even):hover { transform: rotate(-1deg); }
+.tenet-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: 1rem;
+  border-radius: 0.75rem;
+}
+.tenet-card h3 {
+  margin-bottom: 0.75rem;
+  font-size: 1.25rem;
+}
+.tenet-card p {
+  line-height: 1.6;
+  color: var(--secondary-foreground);
+}
+
+/* shape marks used inside tenet icons */
+.shape-diamond { width: 1.25rem; height: 1.25rem; transform: rotate(45deg); border-radius: 3px; border: 2px solid var(--primary-foreground); }
+.shape-circle  { width: 1.25rem; height: 1.25rem; border-radius: 9999px; background: var(--primary-foreground); }
+.shape-bar     { width: 1.5rem; height: 0.375rem; border-radius: 9999px; background: var(--primary-foreground); }
+.shape-corner  { width: 1.25rem; height: 1.25rem; border-bottom: 4px solid var(--primary-foreground); border-right: 4px solid var(--primary-foreground); border-radius: 0 0 3px 0; }
+.shape-spark   { width: 1rem; height: 1rem; transform: rotate(45deg); background: var(--primary-foreground); }
+.shape-pill    { width: 1.5rem; height: 0.625rem; border-radius: 9999px; background: var(--primary-foreground); }
+
+/* Soft tone card background — used on tenet cards, campaign switcher
+   cards, and character cards. Solid tone fills, tinted headings and
+   skill tags are set inline per-element since they vary by context. */
+.tone-quest-1 { background: var(--quest-1-soft); border-color: color-mix(in oklab, var(--quest-1) 35%, white); }
+.tone-quest-2 { background: var(--quest-2-soft); border-color: color-mix(in oklab, var(--quest-2) 35%, white); }
+.tone-quest-3 { background: var(--quest-3-soft); border-color: color-mix(in oklab, var(--quest-3) 35%, white); }
+.tone-quest-4 { background: var(--quest-4-soft); border-color: color-mix(in oklab, var(--quest-4) 35%, white); }
+.tone-quest-5 { background: var(--quest-5-soft); border-color: color-mix(in oklab, var(--quest-5) 35%, white); }
+.tone-quest-6 { background: var(--quest-6-soft); border-color: color-mix(in oklab, var(--quest-6) 35%, white); }
+
+/* ---- How to join / steps -------------------------------------------------- */
+.join-section {
+  border-radius: var(--radius-2xl);
+  background: var(--muted);
+  padding: 2.5rem 1.5rem;
+}
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+}
+.step-item { display: contents; }
+.step { flex: 1; text-align: center; max-width: 18rem; }
+.step-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  margin: 0 auto 1.5rem;
+  border-radius: 9999px;
+  border: 4px solid;
+  background: var(--card);
+  font-size: 1.5rem;
+  font-weight: 700;
+  box-shadow: var(--shadow-parchment);
+}
+.step h3 { margin-bottom: 0.5rem; font-size: 1.25rem; color: var(--secondary-foreground); }
+.step p { padding-inline: 1rem; color: var(--muted-foreground); }
+.step-connector {
+  display: none;
+  width: 3rem;
+  height: 1px;
+  border-top: 4px dotted var(--border);
+}
+
+/* ---- Contact card -------------------------------------------------------- */
+.contact-card {
+  position: relative;
+  overflow: hidden;
+  max-width: 36rem;
+  margin-inline: auto;
+  border-radius: var(--radius-xl);
+  border: 4px solid var(--muted);
+  background: var(--card);
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  box-shadow: var(--shadow-parchment);
+}
+.contact-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 8rem;
+  height: 8rem;
+  border-radius: 0 0 0 9999px;
+  background: color-mix(in oklab, var(--accent) 10%, transparent);
+}
+.contact-card h2 {
+  position: relative;
+  margin-bottom: 1rem;
+  font-size: 1.875rem;
+  color: var(--secondary-foreground);
+}
+.contact-card p {
+  position: relative;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+}
+
+/* ---- Footer -------------------------------------------------------------- */
+.site-footer {
+  padding-top: 3.5rem;
+  padding-bottom: 3rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+}
+
+/* ==========================================================================
+   5. Adventures page
+   ========================================================================== */
+.quest-board-header {
+  margin-bottom: 2.5rem;
+  border-radius: var(--radius-2xl);
+  border: 4px dashed color-mix(in oklab, var(--primary) 40%, transparent);
+  background: var(--secondary);
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+}
+.quest-board-header h1 {
+  margin-bottom: 1rem;
+  font-size: 2.25rem;
+  color: var(--primary);
+}
+.quest-board-header p {
+  margin-inline: auto;
+  max-width: 42rem;
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--secondary-foreground);
+}
+
+.quest-board-layout { display: block; }
+
+.campaign-switcher {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
+}
+.campaign-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  border-radius: var(--radius-lg);
+  border: 3px solid;
+  padding: 1.35rem;
+  text-align: left;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  width: 100%;
+}
+.campaign-card:hover { transform: translateY(-4px); }
+.campaign-card.is-active { transform: translateY(-4px); }
+.campaign-card:focus-visible { outline: 3px solid var(--foreground); outline-offset: 2px; }
+
+.campaign-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.campaign-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.65rem;
+}
+.campaign-tag {
+  display: inline-block;
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--primary-foreground);
+  white-space: nowrap;
+}
+.campaign-card h2 { font-size: 1.2rem; }
+.campaign-card-tagline { font-size: 0.875rem; line-height: 1.5; color: var(--secondary-foreground); }
+
+.campaign-card-latest {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted-foreground);
+}
+.campaign-card-latest span.latest-dot {
+  flex-shrink: 0;
+  width: 0.4rem;
+  height: 0.4rem;
+  margin-bottom: 0.05rem;
+  border-radius: 9999px;
+}
+.campaign-card-latest strong { color: var(--secondary-foreground); font-weight: 700; }
+
+.campaign-card-progress {
+  /* These are <span> elements — without display:block the width and
+     height below are ignored and the bar collapses to a hairline. */
+  display: block;
+  overflow: hidden;
+  width: 100%;
+  height: 0.4rem;
+  border-radius: 9999px;
+  background: var(--muted);
+}
+.campaign-card-progress-fill { display: block; height: 100%; border-radius: 9999px; transition: width 0.3s ease; }
+
+.campaign-card-meta {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--muted-foreground);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.campaign-card-cta {
+  margin-top: 0.1rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+.campaign-card-cta::after { content: "\2192"; display: inline-block; margin-left: 0.3rem; transition: margin-left 0.15s ease; }
+.campaign-card:hover .campaign-card-cta::after { margin-left: 0.6rem; }
+
+.campaign-panel {
+  border-radius: var(--radius-xl);
+  border: 4px solid;
+  background: var(--card);
+  padding: 2rem 1.5rem;
+  box-shadow: var(--shadow-parchment);
+}
+.panel-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+.panel-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.85rem;
+}
+.panel-heading { flex: 1 1 auto; min-width: 12rem; }
+.campaign-eyebrow {
+  margin-bottom: 0.15rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted-foreground);
+}
+.campaign-panel h2 { font-size: 1.875rem; }
+.panel-session-tag {
+  flex-shrink: 0;
+  border-radius: 9999px;
+  padding: 0.4rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--primary-foreground);
+  white-space: nowrap;
+}
+.campaign-blurb {
+  margin-bottom: 2rem;
+  max-width: 48rem;
+  line-height: 1.6;
+  color: var(--secondary-foreground);
+}
+
+.tab-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+.tab-btn {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  background: var(--muted);
+  color: var(--secondary-foreground);
+  transition: background-color 0.15s ease;
+}
+.tab-btn:hover { background: var(--secondary); }
+.tab-btn.is-active { color: var(--primary-foreground); }
+.tab-btn:focus-visible { outline: 3px solid var(--foreground); outline-offset: 2px; }
+.tab-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.4rem;
+  transform: scale(0.55);
+  vertical-align: middle;
+}
+
+.tab-panel { display: none; }
+.tab-panel.is-active { display: block; }
+.tab-panel:focus-visible { outline: none; }
+
+/* World log timeline */
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  padding-left: 1.5rem;
+  border-left: 4px dotted var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+.timeline li {
+  position: relative;
+  border-radius: var(--radius-md);
+  border: 2px dashed var(--border);
+  background: var(--card);
+  padding: 1rem 1.25rem;
+}
+.timeline li::before {
+  content: "";
+  position: absolute;
+  left: -1.95rem;
+  top: 1.35rem;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 9999px;
+  border: 4px solid var(--background);
+  background: var(--border);
+}
+.timeline li.is-latest {
+  border-style: solid;
+  border-color: color-mix(in oklab, var(--current-tone, var(--primary)) 45%, white);
+  background: color-mix(in oklab, var(--current-tone, var(--primary)) 7%, var(--card));
+}
+.timeline li.is-latest::before { background: var(--current-tone, var(--primary)); }
+.timeline-session {
+  margin-bottom: 0.125rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted-foreground);
+}
+.timeline-latest-badge {
+  display: inline-block;
+  margin-left: 0.5rem;
+  border-radius: 9999px;
+  padding: 0.1rem 0.55rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--primary-foreground);
+  background: var(--current-tone, var(--primary));
+  vertical-align: middle;
+}
+.timeline li h3 { margin-top: 0.15rem; font-size: 1.125rem; color: var(--secondary-foreground); }
+.timeline li p { line-height: 1.6; color: var(--muted-foreground); }
+
+/* Characters grid */
+.characters-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+.character-card {
+  display: flex;
+  gap: 0.9rem;
+  align-items: flex-start;
+  border-radius: var(--radius-md);
+  border: 3px solid;
+  padding: 1.25rem;
+}
+.character-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 9999px;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--primary-foreground);
+}
+.character-card-body { flex: 1 1 auto; min-width: 0; }
+.character-card h3 { font-size: 1.125rem; color: var(--secondary-foreground); }
+.character-role {
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--muted-foreground);
+}
+.character-note {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--secondary-foreground);
+}
+
+/* Learning objectives */
+.progress-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+.progress-header p { font-family: var(--font-display); font-size: 1.125rem; color: var(--secondary-foreground); }
+.progress-pct { font-size: 0.875rem; font-weight: 700; color: var(--muted-foreground); }
+.progress-track {
+  overflow: hidden;
+  width: 100%;
+  height: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 9999px;
+  background: var(--muted);
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 9999px;
+  background: var(--current-tone, var(--primary));
+  transition: width 0.3s ease;
+}
+.objectives-list {
+  list-style: none;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.objective {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-radius: var(--radius-md);
+  border: 2px dashed var(--border);
+  padding: 1rem;
+}
+.objective.is-done {
+  border-color: transparent;
+  background: var(--muted);
+}
+.objective-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 0.5rem;
+  border: 2px solid;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--primary-foreground);
+}
+.objective-label { flex: 1; color: var(--secondary-foreground); }
+.skill-tag {
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--primary-foreground);
+}
+.objectives-note { font-size: 0.875rem; color: var(--muted-foreground); }
+
+/* ==========================================================================
+   6. Responsive
+   ========================================================================== */
+@media (min-width: 768px) {
+  .hero { padding: 3.5rem; }
+  .hero h1 { font-size: 4.5rem; }
+  .hero p { font-size: 1.5rem; }
+  .tenets-grid { grid-template-columns: repeat(2, 1fr); }
+  .steps { flex-direction: row; align-items: flex-start; justify-content: space-around; }
+  .step-connector { display: block; margin-top: 2rem; }
+  .campaign-switcher { grid-template-columns: repeat(2, 1fr); }
+  .characters-grid { grid-template-columns: repeat(2, 1fr); }
+  .join-section, .campaign-panel, .quest-board-header { padding: 3rem; }
+}
+@media (min-width: 1024px) {
+  .tenets-grid { grid-template-columns: repeat(3, 1fr); }
+  /* Homepage teaser grid (plain .campaign-switcher, no .quest-board-layout
+     wrapper) keeps three cards in a row on wide screens. */
+  .campaign-switcher { grid-template-columns: repeat(3, 1fr); }
+
+  /* /adventures/ page only: picker becomes a sticky sidebar beside the
+     detail panel so switching campaigns doesn't lose your scroll position. */
+  .quest-board-layout {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    align-items: start;
+    gap: 2rem;
+  }
+  .quest-board-layout .campaign-switcher {
+    grid-template-columns: 1fr;
+    position: sticky;
+    top: 6rem;
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
+    margin-bottom: 0;
+    padding-right: 0.25rem;
+  }
+}
+
+/* ==========================================================================
+   7. Conversion sections (added for the ad campaign)
+   Hero actions, trust strip, audience cards, session run-sheet, pricing,
+   safety, FAQ, closing CTA and the sticky mobile call-to-action.
+   ========================================================================== */
+
+/* ---- Hero actions + trust strip ------------------------------------------ */
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.875rem;
+  margin-bottom: 1.5rem;
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--secondary-foreground);
+  border: 3px solid color-mix(in oklab, var(--primary) 45%, transparent);
+  font-size: 1.0625rem;
+  padding: 0.875rem 1.75rem;
+}
+.btn-ghost:hover { background: color-mix(in oklab, var(--primary) 10%, transparent); }
+
+.hero-reassure {
+  font-size: 0.9375rem !important;
+  font-weight: 600;
+  margin-bottom: 0 !important;
+  color: var(--muted-foreground) !important;
+}
+
+.trust-strip {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 0 0 2.5rem;
+  padding: 0;
+}
+.trust-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 9999px;
+  border: 2px solid var(--border);
+  background: var(--card);
+  padding: 0.4rem 0.9rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--secondary-foreground);
+}
+.trust-chip::before {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background: var(--quest-3);
+}
+
+/* ---- Audience cards ------------------------------------------------------- */
+.audience-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+.audience-card {
+  border-radius: var(--radius-lg);
+  border: 3px solid;
+  padding: 1.75rem;
+}
+.audience-card h3 { margin-bottom: 0.6rem; font-size: 1.125rem; }
+.audience-card p { line-height: 1.6; color: var(--secondary-foreground); font-size: 0.9375rem; }
+.audience-quote {
+  display: block;
+  margin-bottom: 0.9rem;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  line-height: 1.4;
+  color: var(--secondary-foreground);
+}
+
+/* ---- Session run-sheet ---------------------------------------------------- */
+.runsheet {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 1.5rem;
+  border-left: 4px dotted var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.runsheet li { position: relative; }
+.runsheet li::before {
+  content: "";
+  position: absolute;
+  left: -1.95rem;
+  top: 0.3rem;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 9999px;
+  border: 4px solid var(--background);
+  background: var(--primary);
+}
+.runsheet-time {
+  display: inline-block;
+  margin-bottom: 0.3rem;
+  border-radius: 9999px;
+  background: var(--muted);
+  padding: 0.15rem 0.65rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted-foreground);
+}
+.runsheet h3 { margin-bottom: 0.25rem; font-size: 1.125rem; color: var(--secondary-foreground); }
+.runsheet p { line-height: 1.6; color: var(--muted-foreground); }
+
+.runsheet-aside {
+  align-self: start;
+  border-radius: var(--radius-lg);
+  border: 3px dashed color-mix(in oklab, var(--quest-4) 45%, transparent);
+  background: var(--quest-4-soft);
+  padding: 1.5rem;
+}
+.runsheet-aside h3 { margin-bottom: 0.75rem; font-size: 1.0625rem; color: color-mix(in oklab, var(--quest-4) 78%, black); }
+.runsheet-aside ul { margin: 0; padding-left: 1.1rem; }
+.runsheet-aside li { margin-bottom: 0.5rem; line-height: 1.5; font-size: 0.9375rem; color: var(--secondary-foreground); }
+.runsheet-aside li:last-child { margin-bottom: 0; }
+
+.session-layout { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+
+/* ---- Pricing: styled as character-sheet stat blocks ----------------------- */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+.price-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-lg);
+  border: 3px solid var(--border);
+  background: var(--card);
+  padding: 1.75rem;
+}
+.price-card.is-featured {
+  border-color: var(--accent);
+  box-shadow: 0 8px 0 0 color-mix(in oklab, var(--accent) 25%, transparent);
+}
+.price-flag {
+  position: absolute;
+  top: -0.85rem;
+  left: 1.5rem;
+  border-radius: 9999px;
+  background: var(--accent);
+  color: var(--accent-foreground);
+  padding: 0.25rem 0.9rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.price-card h3 { margin-bottom: 0.25rem; font-size: 1.25rem; color: var(--secondary-foreground); }
+.price-card .price-desc { font-size: 0.875rem; color: var(--muted-foreground); }
+.price-amount {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  margin: 1rem 0 0.25rem;
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  line-height: 1;
+  color: var(--primary);
+}
+.price-amount { flex-wrap: wrap; }
+.price-amount .price-prefix {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--muted-foreground);
+}
+.price-amount .price-unit {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--muted-foreground);
+}
+.price-note { margin-bottom: 1.25rem; font-size: 0.8125rem; color: var(--muted-foreground); }
+.price-list {
+  list-style: none;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  border-top: 2px dashed var(--border);
+  padding-top: 1.25rem;
+}
+.price-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--secondary-foreground);
+}
+.price-list li::before {
+  content: "\2713";
+  flex-shrink: 0;
+  margin-top: 0.05rem;
+  font-weight: 700;
+  color: var(--quest-3);
+}
+.price-card .btn { margin-top: auto; }
+.btn-block {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 1.125rem;
+  padding: 0.9rem 1.5rem;
+}
+.pricing-footnote {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+}
+
+/* ---- Safety / trust ------------------------------------------------------- */
+.safety-section {
+  border-radius: var(--radius-2xl);
+  background: var(--muted);
+  padding: 2.5rem 1.5rem;
+}
+.safety-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+.safety-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.875rem;
+  border-radius: var(--radius-md);
+  background: var(--card);
+  border: 2px solid var(--border);
+  padding: 1.25rem;
+}
+.safety-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.6rem;
+  background: var(--quest-3);
+  color: var(--primary-foreground);
+  font-weight: 700;
+}
+.safety-item h3 { margin-bottom: 0.2rem; font-size: 1rem; color: var(--secondary-foreground); }
+.safety-item p { font-size: 0.875rem; line-height: 1.55; color: var(--muted-foreground); }
+
+/* ---- FAQ ------------------------------------------------------------------ */
+.faq-list { display: flex; flex-direction: column; gap: 0.75rem; }
+.faq-item {
+  border-radius: var(--radius-md);
+  border: 2px solid var(--border);
+  background: var(--card);
+  padding: 0 1.25rem;
+}
+.faq-item[open] { border-color: color-mix(in oklab, var(--primary) 45%, transparent); }
+.faq-item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  cursor: pointer;
+  list-style: none;
+  padding: 1.1rem 0;
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  color: var(--secondary-foreground);
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after {
+  content: "+";
+  flex-shrink: 0;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--primary);
+  transition: transform 0.15s ease;
+}
+.faq-item[open] summary::after { content: "\2013"; }
+.faq-item > p {
+  padding: 0 0 1.25rem;
+  line-height: 1.65;
+  color: var(--muted-foreground);
+}
+.faq-item > p + p { padding-top: 0; margin-top: -0.5rem; }
+
+/* ---- Closing CTA band ----------------------------------------------------- */
+.cta-band {
+  border-radius: var(--radius-2xl);
+  border: 4px dashed color-mix(in oklab, var(--accent) 40%, transparent);
+  background: var(--secondary);
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+}
+.cta-band h2 { margin-bottom: 1rem; font-size: 2rem; color: var(--primary); }
+.cta-band > p {
+  margin-inline: auto;
+  margin-bottom: 1.75rem;
+  max-width: 38rem;
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--secondary-foreground);
+}
+.cta-alt {
+  margin-top: 1.5rem;
+  font-size: 0.9375rem;
+  color: var(--muted-foreground);
+}
+.cta-alt a { font-weight: 700; color: var(--accent); text-decoration: underline; }
+
+/* ---- Footer expansion ----------------------------------------------------- */
+.site-footer .footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.25rem 1.25rem;
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+  color: var(--secondary-foreground);
+}
+.site-footer .footer-links a:hover { text-decoration: underline; }
+.site-footer .footer-meta { margin-top: 0.35rem; }
+
+/* ---- Sticky mobile CTA ---------------------------------------------------- */
+.mobile-cta {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-top: 3px solid color-mix(in oklab, var(--primary) 30%, transparent);
+  background: color-mix(in oklab, var(--background) 94%, transparent);
+  backdrop-filter: blur(8px);
+  padding: 0.7rem 1rem calc(0.7rem + env(safe-area-inset-bottom));
+}
+.mobile-cta p {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--secondary-foreground);
+}
+.mobile-cta .btn {
+  flex-shrink: 0;
+  padding: 0.7rem 1.25rem;
+  font-size: 1rem;
+  border-radius: 0.85rem;
+}
+body { padding-bottom: 4.75rem; }
+
+/* ---- Adventures page: recruiting state + panel CTA ------------------------ */
+.campaign-card-spots {
+  display: inline-flex;
+  align-self: flex-start; /* card is a flex column — don't stretch full width */
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: 9999px;
+  background: color-mix(in oklab, var(--accent) 12%, transparent);
+  padding: 0.2rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: color-mix(in oklab, var(--accent) 80%, black);
+}
+.campaign-card-spots::before {
+  content: "";
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 9999px;
+  background: var(--accent);
+}
+.panel-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  border-radius: var(--radius-lg);
+  border: 3px dashed color-mix(in oklab, var(--accent) 40%, transparent);
+  padding: 1.25rem 1.5rem;
+}
+.panel-cta p { flex: 1; min-width: 14rem; line-height: 1.55; color: var(--secondary-foreground); }
+.panel-cta .btn { padding: 0.8rem 1.5rem; font-size: 1.0625rem; }
+.timeline-empty,
+.characters-empty {
+  border-radius: var(--radius-md);
+  border: 2px dashed var(--border);
+  padding: 1.5rem;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+}
+.privacy-note {
+  margin-top: 1.25rem;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+}
+
+/* ---- Responsive ----------------------------------------------------------- */
+@media (min-width: 768px) {
+  body { padding-bottom: 0; }
+  .mobile-cta { display: none; }
+  .audience-grid { grid-template-columns: repeat(3, 1fr); }
+  .pricing-grid { grid-template-columns: repeat(3, 1fr); }
+  .safety-grid { grid-template-columns: repeat(2, 1fr); }
+  .session-layout { grid-template-columns: 1.4fr 1fr; gap: 3rem; }
+  .safety-section, .cta-band { padding: 3rem; }
+  .cta-band h2 { font-size: 2.5rem; }
+}
+
+@media (max-width: 640px) {
+  /* Same-page anchors are reachable by scrolling; hiding them stops the
+     nav wrapping into three ragged lines on a phone. Brand + the booking
+     button + Adventures (a separate page) stay visible. */
+  .nav-links .nav-scroll-link { display: none; }
+  .nav-links { gap: 0.5rem; }
+  .hero h1 { font-size: 2rem; }
+  .quest-board-header h1 { font-size: 1.875rem; }
+  .trust-chip { font-size: 0.75rem; padding: 0.35rem 0.7rem; }
+  .cta-band h2 { font-size: 1.625rem; }
+  .price-amount { font-size: 2rem; }
+}
+
+@media (min-width: 1024px) {
+  /* In the sticky sidebar the cards only need to be identifiable — the
+     open campaign's detail is right beside them. Trimming the "Latest:"
+     line keeps all three cards visible without a nested scrollbar. */
+  .quest-board-layout .campaign-card { padding: 1.1rem 1.2rem; }
+  .quest-board-layout .campaign-card-latest { display: none; }
+  .quest-board-layout .campaign-card-tagline { font-size: 0.8125rem; }
+}
+
+/* ==========================================================================
+   8. Inline quest panel (single-page version)
+   The detail panel lives inside the same grid as the cards and spans every
+   column, so it opens as a full-width row on desktop and directly under the
+   tapped card on mobile.
+   ========================================================================== */
+
+.quest-panel-inline {
+  grid-column: 1 / -1;
+  position: relative;
+  margin: 0.25rem 0 0.5rem;
+  animation: quest-panel-in 0.18s ease-out;
+}
+@keyframes quest-panel-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .quest-panel-inline { animation: none; }
+}
+
+.quest-panel-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.9rem;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 9999px;
+  background: var(--muted);
+  color: var(--muted-foreground);
+  font-size: 1.5rem;
+  line-height: 1;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.quest-panel-close:hover {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+/* The panel now sits inside a section that already has a heading, so its
+   title is an <h3> rather than an <h2> — keep the visual weight. */
+.quest-panel-inline .panel-heading h3 { font-size: 1.75rem; }
+.quest-panel-inline .panel-heading h3:focus { outline: none; }
+.quest-panel-inline .timeline h4 { font-size: 1.0625rem; margin-bottom: 0.35rem; }
+.quest-panel-inline .character-card-body h4 { font-size: 1rem; margin-bottom: 0.15rem; }
+.quest-panel-inline .panel-header { padding-right: 2.5rem; }
+
+/* Cards are buttons now, not links — make the affordance obvious. */
+.campaign-card[aria-expanded="true"] .campaign-card-cta::after {
+  content: "\2191";
+}
+
+@media (max-width: 640px) {
+  .quest-panel-inline { padding: 1.5rem 1.15rem; }
+  .quest-panel-inline .panel-heading h3 { font-size: 1.375rem; }
+}
+
+/* ==========================================================================
+   9. Solo / group pricing switch
+   Two radio inputs sit just before .pricing-toggle and .pricing-grid, so
+   sibling selectors can swap which set of prices is visible. No JavaScript.
+   ========================================================================== */
+
+/* Keep the radios focusable (so they still work by keyboard) but invisible.
+   display:none would remove them from the tab order entirely. */
+.pricing-radio {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.pricing-toggle {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+  width: fit-content;
+  margin: -1.5rem auto 2.5rem;
+  border-radius: 9999px;
+  border: 2px solid var(--border);
+  background: var(--card);
+  padding: 0.3rem;
+}
+.pricing-toggle label {
+  cursor: pointer;
+  border-radius: 9999px;
+  padding: 0.5rem 1.15rem;
+  font-family: var(--font-display);
+  font-size: 0.9375rem;
+  color: var(--muted-foreground);
+  transition: background-color 0.15s ease, color 0.15s ease;
+  user-select: none;
+}
+.pricing-toggle label:hover { color: var(--secondary-foreground); }
+
+#mode-group:checked ~ .pricing-toggle label[for="mode-group"],
+#mode-solo:checked ~ .pricing-toggle label[for="mode-solo"] {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+/* Show the focus ring on the label when the hidden radio has focus. */
+.pricing-radio:focus-visible ~ .pricing-toggle {
+  outline: 3px solid var(--foreground);
+  outline-offset: 3px;
+}
+
+/* Swap which prices are visible. Small group is the default. */
+#mode-group:checked ~ .pricing-grid .for-solo { display: none; }
+#mode-solo:checked ~ .pricing-grid .for-group { display: none; }
+
+@media (max-width: 640px) {
+  .pricing-toggle { margin-bottom: 2rem; }
+  .pricing-toggle label { padding: 0.5rem 0.9rem; font-size: 0.875rem; }
+}
+
+/* A grid column of `1fr` still has an automatic minimum width, so a long
+   unbroken price string can force the whole row wider than the page. Cap the
+   minimum at zero and let long values wrap instead. */
+.pricing-grid { grid-template-columns: 1fr; }
+.price-card { min-width: 0; }
+.price-amount { overflow-wrap: anywhere; }
+
+@media (min-width: 768px) {
+  .pricing-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}

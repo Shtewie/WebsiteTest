@@ -1,0 +1,39 @@
+[build]
+  publish = "."
+
+# Short cache windows since files aren't fingerprinted — if you edit
+# style.css or adventures-data.js, visitors will see the change within an
+# hour rather than needing a cache-busting rename.
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600, must-revalidate"
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600, must-revalidate"
+
+# The share image and favicon change almost never.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/favicon.ico"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+# Basic security headers. Harmless on a static site, and some ad platforms
+# and browsers look for them.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"
+
+# Note: no redirect rule needed for /adventures — Netlify's built-in
+# pretty-URL handling already serves adventures/index.html there
+# automatically. Adding an explicit redirect for it caused a redirect loop.
