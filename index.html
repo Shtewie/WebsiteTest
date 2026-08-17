@@ -76,9 +76,11 @@
        on load) so they never block first paint. -->
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
   <link rel="preload" as="style" href="css/style.css" onload="this.onload=null;this.rel='stylesheet'" />
+  <link rel="preload" as="style" href="css/booking.css" onload="this.onload=null;this.rel='stylesheet'" />
   <noscript>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" />
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/booking.css" />
   </noscript>
 
   <!-- ═══ ANALYTICS ═══════════════════════════════════════════════════════
@@ -246,7 +248,7 @@
         <li>Be first in line</li>
         <li>Have direct impact on the story creation</li>
       </ul>
-      <a href="#contact" class="btn btn-blue" data-track-cta="pricing-schools">Join the Waitlist</a>
+      <a href="#waitlist" class="btn btn-blue" data-track-cta="pricing-schools">Join the Waitlist</a>
     </article>
   </div>
   <p class="pricing-footnote">Sibling and concession rates are available.</p>
@@ -318,25 +320,11 @@
           </div>
         </section>
 
-        <!-- ═══ Closing CTA ══════════════════════════════════════════════ -->
-        <section id="contact" class="section cta-band" style="margin-bottom: 0;">
-          <h2>Ready to begin your adventure?</h2>
-          <p>Tell us about your young adventurer &mdash; their age, their interests, and what you'd like them to get better at. We'll tell you honestly whether we've got the right table for them.</p>
-          <a href="https://forms.gle/FaDSAM434s5T8QVz7" target="_blank" rel="noopener noreferrer" class="btn btn-accent" data-track-cta="footer-form">Join an Adventure</a>
-        </section>
-      </main>
-
-      <footer class="site-footer">
-        <p class="footer-links">
-          <a href="#how-it-works">How It Works</a>
-          <a href="#live-quests">Adventures</a>
-          <a href="#pricing">Pricing</a>
-          <a href="#faq">FAQ</a>
-        </p>
-      </footer>
-    </div>
-  </div>
-<section id="contact" class="section booking-section" style="margin-bottom: 0;">
+        <!-- ═══ BOOKING ═══ Two tabs in one form: book a session, or join
+             the waitlist. Every "Join an Adventure" button points at
+             #contact and lands here. Times come from the EDIT THIS block
+             at the top of js/booking.js. ═════════════════════════════ -->
+        <section id="contact" class="section booking-section" style="margin-bottom: 0;">
           <h2 class="section-title">Ready to begin your adventure?</h2>
           <p class="section-sub">Tell us about your young adventurer &mdash; their age, their interests, and what you'd like them to get better at. We'll tell you honestly whether we've got the right table for them.</p>
  
@@ -474,7 +462,7 @@
           </form>
         </section>
       </main>
- 
+
       <footer class="site-footer">
         <p class="footer-links">
           <a href="#how-it-works">How It Works</a>
@@ -494,6 +482,7 @@
   <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
   <script src="js/adventures-data.js"></script>
   <script src="js/quests.js"></script>
+  <script src="js/booking.js"></script>
   <script src="js/track.js"></script>
 </body>
 </html>
