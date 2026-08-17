@@ -336,7 +336,155 @@
       </footer>
     </div>
   </div>
-
+<section id="contact" class="section booking-section" style="margin-bottom: 0;">
+          <h2 class="section-title">Ready to begin your adventure?</h2>
+          <p class="section-sub">Tell us about your young adventurer &mdash; their age, their interests, and what you'd like them to get better at. We'll tell you honestly whether we've got the right table for them.</p>
+ 
+          <!-- Shown after a successful submit; Netlify returns here with ?done=1 -->
+          <div id="done" class="done-card" hidden tabindex="-1">
+            <span class="done-tick" aria-hidden="true">&#10003;</span>
+            <h3>Thanks &mdash; that's come through</h3>
+            <p>We'll email you within a day. Nothing to bring and nothing to buy &mdash; we provide the dice, the sheets and the books.</p>
+          </div>
+ 
+          <form id="booking-form" name="booking" method="POST" action="/?done=1#contact"
+                data-netlify="true" data-netlify-honeypot="bot-field">
+            <input type="hidden" name="form-name" value="booking" />
+            <!-- Spam trap. Parked off-screen by .hp-field in booking.css, so
+                 a person never sees it but a bot fills it in. Netlify bins any
+                 submission that arrives with it filled. -->
+            <p class="hp-field" aria-hidden="true"><label>Leave this empty: <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
+ 
+            <!-- Tab switch. Pure CSS — the panels below are shown and hidden
+                 by the :checked state of these two radios. -->
+            <input type="radio" name="mode" id="mode-book" value="Booking a session" class="mode-radio" checked />
+            <input type="radio" name="mode" id="mode-waitlist" value="Waitlist" class="mode-radio" />
+            <div class="mode-toggle">
+              <label for="mode-book">Book a session</label>
+              <label for="mode-waitlist" id="waitlist">Join the waitlist</label>
+            </div>
+ 
+            <!-- ─── Tab 1: pick a time ─────────────────────────────────── -->
+            <div class="mode-panel panel-book">
+              <h3 class="booking-h">Pick a time</h3>
+              <p class="block-sub">Newcastle time. Each session runs for one hour. Nothing is charged now &mdash; we'll confirm by email first.</p>
+ 
+              <div id="slot-list" class="slot-list">
+                <!-- Filled in by js/booking.js. The hidden option below must
+                     stay: Netlify only registers form fields it can see in
+                     the HTML at deploy time, so without it the chosen time
+                     wouldn't come through. -->
+                <label class="time-chip" hidden>
+                  <input type="radio" name="session" value="" /><span>&mdash;</span>
+                </label>
+                <p class="slots-loading">Loading times&hellip;</p>
+              </div>
+ 
+              <p class="mode-nudge">None of these suit? <label for="mode-waitlist" class="mode-link">Join the waitlist instead</label> and we'll let you know when something opens up.</p>
+            </div>
+ 
+            <!-- ─── Tab 2: waitlist ────────────────────────────────────── -->
+            <div class="mode-panel panel-waitlist">
+              <h3 class="booking-h">Join the waitlist</h3>
+              <p class="block-sub">Tell us what you're after and we'll be in touch the moment a table opens up. No obligation, and you can leave the list any time.</p>
+ 
+              <fieldset class="field radio-set">
+                <legend>What are you hoping for?</legend>
+                <label class="radio-chip"><input type="radio" name="wait-type" value="A group campaign" /><span>A group campaign</span></label>
+                <label class="radio-chip"><input type="radio" name="wait-type" value="One-on-one sessions" /><span>One-on-one sessions</span></label>
+                <label class="radio-chip"><input type="radio" name="wait-type" value="Either is fine" /><span>Either is fine</span></label>
+              </fieldset>
+ 
+              <div class="field">
+                <label for="availability">Which days and times usually suit?</label>
+                <textarea id="availability" name="availability" rows="2"
+                  placeholder="e.g. after school Tuesdays or Thursdays, or Saturday mornings"></textarea>
+              </div>
+            </div>
+ 
+            <!-- ─── Shared details ─────────────────────────────────────── -->
+            <h3 class="booking-h">Your details</h3>
+ 
+            <div class="field-row">
+              <div class="field">
+                <label for="parent-name">Your name</label>
+                <input id="parent-name" name="parent-name" type="text" autocomplete="name" required />
+              </div>
+              <div class="field">
+                <label for="parent-email">Email</label>
+                <input id="parent-email" name="parent-email" type="email" autocomplete="email" required />
+              </div>
+            </div>
+ 
+            <div class="field-row">
+              <div class="field">
+                <label for="parent-phone">Mobile</label>
+                <input id="parent-phone" name="parent-phone" type="tel" autocomplete="tel" required />
+              </div>
+              <div class="field">
+                <label for="student-year">Their school year</label>
+                <select id="student-year" name="student-year" required>
+                  <option value="">Choose&hellip;</option>
+                  <option>Year 3</option><option>Year 4</option><option>Year 5</option>
+                  <option>Year 6</option><option>Year 7</option><option>Year 8</option>
+                  <option>Year 9</option><option>Year 10</option><option>Year 11</option>
+                  <option>Year 12</option><option>Not in school</option>
+                </select>
+              </div>
+            </div>
+ 
+            <div class="field">
+              <label for="student-first-name">Their first name</label>
+              <input id="student-first-name" name="student-first-name" type="text" required />
+              <p class="field-hint">First name is plenty &mdash; we never publish players' names.</p>
+            </div>
+ 
+            <div class="field">
+              <label for="goals">What would you like them to get out of it?</label>
+              <textarea id="goals" name="goals" rows="3" required
+                placeholder="Reading confidence, speaking up in a group, making friends, handling losing — whatever matters most to you."></textarea>
+            </div>
+ 
+            <div class="field">
+              <label for="notes">Anything else we should know? <span class="optional">optional</span></label>
+              <textarea id="notes" name="notes" rows="3"
+                placeholder="Support needs, things that help them focus, topics to steer around."></textarea>
+            </div>
+ 
+            <label class="check-row">
+              <input type="checkbox" name="consent" value="yes" required />
+              <span>I'm this child's parent or carer and I'm happy to be contacted about this.</span>
+            </label>
+ 
+            <p class="privacy-note">
+              We keep these answers to run your child's sessions and nothing else &mdash;
+              never sold, never shared. Ask any time and we'll delete them.
+            </p>
+ 
+            <button type="submit" class="btn btn-accent btn-block" data-track-cta="booking-submit">
+              <span class="label-book">Request this session</span>
+              <span class="label-waitlist">Join the waitlist</span>
+            </button>
+            <p class="pay-note">We'll confirm by email and sort out payment before the first session.</p>
+ 
+            <noscript>
+              <p class="slots-empty" style="margin-top:1rem">The time picker needs JavaScript.
+                Please email us instead and we'll book you in.</p>
+            </noscript>
+          </form>
+        </section>
+      </main>
+ 
+      <footer class="site-footer">
+        <p class="footer-links">
+          <a href="#how-it-works">How It Works</a>
+          <a href="#live-quests">Adventures</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#faq">FAQ</a>
+        </p>
+      </footer>
+    </div>
+  </div>
   <!-- Sticky CTA for phones, where most ad traffic lands. -->
   <div class="mobile-cta">
     <p>Spots open now in Newcastle</p>
