@@ -604,7 +604,7 @@
     // From here on the browser's own validation would fight ours, and its
     // bubbles can't be read on a step that isn't showing.
     form.noValidate = true;
-    form.classList.add("js-steps");
+    form.classList.add("js-bk-steps");
     var progress = document.getElementById("steps");
     if (progress) progress.hidden = false;
     showStep(0, false);
