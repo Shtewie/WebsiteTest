@@ -450,7 +450,7 @@
               <p class="done-next">Nothing to bring and nothing to buy &mdash; the dice, character sheets and rulebooks all arrive with your Game Master.</p>
             </div>
 
-            <form id="booking-form" name="booking" method="POST" action="/?done=1#contact"
+            <form id="booking-form" name="booking" method="POST" action="?done=1#contact"
                   data-netlify="true" data-netlify-honeypot="bot-field">
               <input type="hidden" name="form-name" value="booking" />
               <!-- Spam trap, parked off-screen by .hp-field. A person never
@@ -467,14 +467,14 @@
 
               <!-- Revealed by js/booking.js. Without it, every step below is
                    simply visible at once: a longer form, but a working one. -->
-              <ol class="steps" id="steps" hidden>
+              <ol class="bk-steps" id="steps" hidden>
                 <li data-step-dot data-state="current"><span class="label-book">Time</span><span class="label-waitlist">What you want</span></li>
                 <li data-step-dot data-state="todo">Details</li>
                 <li data-step-dot data-state="todo">Check &amp; send</li>
               </ol>
 
               <!-- ─── Step 1 ───────────────────────────────────────────── -->
-              <section class="step" data-step="1" aria-label="Step 1 of 3">
+              <section class="bk-step" data-step="1" aria-label="Step 1 of 3">
                 <div class="panel-book">
                   <h3 class="booking-h" data-step-heading tabindex="-1">Pick a time</h3>
                   <p class="block-sub">All times are Newcastle time, and every session runs for one hour in your own home. Choose a day, then a time.</p>
@@ -518,7 +518,7 @@
               </section>
 
               <!-- ─── Step 2 ───────────────────────────────────────────── -->
-              <section class="step" data-step="2" aria-label="Step 2 of 3">
+              <section class="bk-step" data-step="2" aria-label="Step 2 of 3">
                 <h3 class="booking-h" data-step-heading tabindex="-1">Your details</h3>
                 <p class="block-sub">Enough to reply to you and to plan the first session. Nothing more.</p>
 
@@ -608,7 +608,7 @@
               </section>
 
               <!-- ─── Step 3 ───────────────────────────────────────────── -->
-              <section class="step" data-step="3" aria-label="Step 3 of 3">
+              <section class="bk-step" data-step="3" aria-label="Step 3 of 3">
                 <h3 class="booking-h" data-step-heading tabindex="-1">Check and send</h3>
                 <p class="block-sub">Here's what comes to us. Change anything you like before sending.</p>
 
