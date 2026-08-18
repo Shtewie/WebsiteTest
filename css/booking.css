@@ -5,7 +5,11 @@
    --accent is already the "click me" colour and must not double as a warning.
 
    Contents
-     1. Shell
+     NOTE: .step and .steps belong to the "how it works" component in
+   style.css (.step sets max-width:18rem and text-align:center). The booking
+   flow uses .bk-step / .bk-steps instead. Don't rename them back.
+
+   1. Shell
      2. Book / waitlist switch
      3. Progress steps
      4. Time picker
@@ -136,7 +140,7 @@
 /* ---- 3. Progress steps --------------------------------------------------- */
 /* Revealed by JavaScript. Without it every step is simply visible at once,
    which is a longer form but a working one. */
-.steps {
+.bk-steps {
   display: flex;
   gap: 0.5rem;
   list-style: none;
@@ -144,7 +148,7 @@
   padding: 0;
   counter-reset: step;
 }
-.steps li {
+.bk-steps li {
   flex: 1;
   padding-top: 0.6rem;
   border-top: 4px solid var(--border);
@@ -154,17 +158,17 @@
   color: var(--muted-foreground);
   transition: border-color 0.2s ease, color 0.2s ease;
 }
-.steps li::before {
+.bk-steps li::before {
   counter-increment: step;
   content: counter(step) ". ";
 }
-.steps li[data-state="current"] { border-top-color: var(--primary); color: var(--secondary-foreground); }
-.steps li[data-state="done"] { border-top-color: var(--bk-ok); color: var(--muted-foreground); }
-.steps li[data-state="done"]::before { content: "\2713  "; }
+.bk-steps li[data-state="current"] { border-top-color: var(--primary); color: var(--secondary-foreground); }
+.bk-steps li[data-state="done"] { border-top-color: var(--bk-ok); color: var(--muted-foreground); }
+.bk-steps li[data-state="done"]::before { content: "\2713  "; }
 
-.step { margin: 0; padding: 0; border: 0; }
-.step + .step { margin-top: 2.5rem; }
-.js-steps .step + .step { margin-top: 0; }
+.bk-step { margin: 0; padding: 0; border: 0; }
+.bk-step + .bk-step { margin-top: 2.5rem; }
+.js-bk-steps .bk-step + .bk-step { margin-top: 0; }
 
 /* ---- 4. Time picker ------------------------------------------------------ */
 .slots-loading, .slots-empty {
@@ -485,7 +489,9 @@
 .step-back:hover { color: var(--secondary-foreground); }
 .step-back::before { content: "\2190  "; }
 
-.privacy-note, .pay-note {
+.check-field { margin-bottom: 0.5rem; }
+
+.booking-section .privacy-note, .pay-note {
   margin-top: 0.9rem;
   font-size: 0.8125rem;
   line-height: 1.55;
@@ -539,7 +545,7 @@
 @media (min-width: 640px) {
   .booking-section { padding: 3rem 2rem; }
   .field-row { grid-template-columns: 1fr 1fr; }
-  .steps li { font-size: 0.875rem; }
+  .bk-steps li { font-size: 0.875rem; }
 }
 @media (min-width: 768px) {
   .booking-section { padding: 3.5rem 3rem; }
@@ -549,12 +555,12 @@
 @media (max-width: 420px) {
   .mode-toggle label { padding: 0.6rem 0.85rem; font-size: 0.875rem; }
   .day-chip { flex: 1 1 8rem; min-width: 0; }
-  .steps li { font-size: 0.75rem; }
+  .bk-steps li { font-size: 0.75rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   .booking-section *, .booking-section *::before { transition-duration: 0.01ms !important; }
 }
 @media print {
-  .mode-toggle, .steps, .step-nav, .more-dates { display: none !important; }
-  .step { display: block !important; }
+  .mode-toggle, .bk-steps, .step-nav, .more-dates { display: none !important; }
+  .bk-step { display: block !important; }
 }
