@@ -29,7 +29,7 @@
 
   // Start times on a 24-hour clock. An empty day isn't offered at all.
   var WEEK = CFG.week || {
-    mon: ["", ""], tue: [], wed: ["", ""],
+    mon: ["13:30", ""], tue: [], wed: ["", ""],
     thu: ["", ""], fri: [], sat: ["", "", ""],
     sun: [],
   };
