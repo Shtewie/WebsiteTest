@@ -8,44 +8,33 @@ exactly as they are.
 
 ---
 
-## ⚠️ Before you publish — fill in the blanks
+## Before you publish
 
-Every value I couldn't know is marked `[[LIKE_THIS]]`. **Find them all with:**
+Every `[[PLACEHOLDER]]` the first draft shipped with has been filled in. To
+confirm none crept back in:
 
 ```sh
 grep -rn '\[\[' --include=*.html --include=*.js --include=*.xml --include=*.txt .
 ```
 
-| Placeholder | What it is | Where |
-|---|---|---|
-| `[[SUBURB]]` | The suburb or city you run in | `index.html` |
-| `[[EMAIL]]` / `[[PHONE]]` / `[[PHONE_RAW]]` | Contact details. `PHONE_RAW` is the dial-able version, e.g. `+61412345678` | `index.html` |
-| `[[XX]]` | Schools & Services starting price | `index.html` pricing |
-| `[[SOLO_SESSION]]` | One-on-one single session price | `index.html` pricing |
-| `[[SOLO_TERM]]` | One-on-one per-session term price | `index.html` pricing |
-| `[[SOLO_TERM_TOTAL]]` | One-on-one total per term (per-session × 10) | `index.html` pricing |
-| `[[N]]` | Number of sessions per term; also spots open per campaign | `index.html`, `js/adventures-data.js` |
-| `[[SESSION_LENGTH]]` | e.g. `2 hours` | `index.html` |
-| `[[SCHEDULE]]` / `[[VENUE]]` | e.g. `Saturday mornings` / the venue name | FAQ |
-| `[[RESPONSE_TIME]]` | e.g. `one business day` | hero |
-| `[[NOTICE_PERIOD]]` | e.g. `two weeks` | pricing |
-| `[[COVER]]` | Public liability cover amount, e.g. `20 million` | safety |
-| `[[ABN]]` | Your ABN | footer |
-| `[[YEARS]]` | How long you've been running tables | "What's included" |
-
 **The domain is set to `tabletopteachings.com`** in the canonical tag, the
 Open Graph tags, `sitemap.xml` and `robots.txt`. If you end up on a different
 domain, find and replace that string across those four files.
 
-**If a claim isn't true, delete the line rather than softening it.** The safety
-section is only worth having because every item in it is verifiable.
+**If a claim isn't true, delete the line rather than softening it.** The
+credentials answers in the FAQ are only worth having because every item in
+them is verifiable.
 
 ### Then, in order of value
 
 1. **Install an analytics tag.** There's a commented block in the `<head>` of
-   `index.html` — paste your GA4 / Google Ads / Meta tag there and into
-   `adventures/index.html`. `js/track.js` does the rest. Without this you're
-   buying traffic you can't measure.
+   `index.html` — paste your GA4 / Google Ads / Meta tag there. Without this
+   you're buying traffic you can't measure.
+
+   Mark **`generate_lead`** as your conversion, not `cta_click`. `cta_click`
+   fires whenever someone taps a "Join an Adventure" button, which on this
+   single-page site only scrolls them to the form. `generate_lead` fires once,
+   on the `?done=1` page Netlify returns to after a booking is accepted.
 2. **Add two or three real parent quotes.** The testimonials section is built
    and commented out in `index.html`; delete the comment markers and fill it
    in. Get written permission, use first name + year level only, never a
@@ -53,9 +42,9 @@ section is only worth having because every item in it is verifiable.
 3. **Add one photo of you and one of a table mid-session.** The site has no
    images of real people. For a stranger running activities with kids, this is
    the biggest remaining trust gap.
-4. **Decide your offer.** Every CTA currently says "Ask About a Spot". A free
+4. **Decide your offer.** Most CTAs say "Join an Adventure". A free
    15-minute intro call converts better if you're willing to run them — change
-   the button text in both HTML files and keep it identical everywhere.
+   the button text and keep it identical everywhere.
 5. **Pick one host.** This repo is configured for Netlify (`netlify.toml`). If
    you're also running the GitHub Pages workflow, turn one of them off so
    there's a single canonical domain.
@@ -65,18 +54,30 @@ section is only worth having because every item in it is verifiable.
 ## File map
 
 ```
-index.html               → homepage / main landing page
+index.html               → the whole site: hero, how it works, adventures,
+                            pricing, FAQ and the booking form
 404.html                 → shown for any missing page
-css/style.css            → all styling (colours, fonts, layout)
+css/style.css            → all page styling (colours, fonts, layout)
+css/booking.css          → styling for the booking form and time picker
+
+js/availability.js       → ★ YOUR TEACHING WEEK. Days, times, booked slots
+                            and holidays. This is the file you will edit
+                            most often — see "Changing your availability"
+js/schedule.js           → turns availability.js into the time picker and
+                            runs the three-step booking form. Don't edit
 js/adventures-data.js    → the campaign content — edit THIS to change what
                             the Adventures section shows
 js/quests.js             → renders the campaign cards and the detail panel
                             that expands inline when a card is clicked
-js/track.js              → fires conversion events on CTA clicks
+js/track.js              → reports CTA clicks to your analytics tag
+
 assets/og-image.png      → the 1200×630 image shown when the site is shared
 favicon.ico, robots.txt, sitemap.xml
 netlify.toml             → hosting config (caching, security headers)
 ```
+
+There is no `/adventures/` page. It was folded into the homepage; anything
+still referring to one is out of date.
 
 ---
 
@@ -105,15 +106,63 @@ back.
 leave it as `""` for NPCs. The site states publicly that you don't publish
 players' names; that promise has to hold.
 
-**Prices** — the Solo / Small group switch in the pricing section is pure CSS:
-two radio inputs and `:checked ~` rules, no JavaScript. Each card holds both
-sets of prices, tagged `.for-group` and `.for-solo`. **When you change a price,
-change it in both places** — it's easy to update the group figure and leave the
-one-on-one one stale.
+**Prices** — plain text in `index.html`, one set of figures, no switch. But
+each price appears in **three** places: the visible pricing card, the
+`LocalBusiness` schema in `<head>` (`priceRange` and `hasOfferCatalog`), and
+the `<meta name="description">`. Change all three together or Google will
+show a price you no longer charge.
 
 **Colours / fonts** — all at the top of `css/style.css` under `:root`. Six
 "quest" tones (`--quest-1` … `--quest-6`) are reused across cards, tags and
 badges.
+
+---
+
+## Changing your availability
+
+Open **`js/availability.js`**. It is the only file involved. Commit and push,
+and the picker updates within the hour (see the cache headers in
+`netlify.toml`).
+
+**Your regular week** — the start time of every session you're willing to run:
+
+```js
+week: {
+  mon: ["16:00", "17:30"],
+  fri: [],                       // a day you don't teach
+  sat: ["09:00", "10:30", "13:00"],
+},
+```
+
+**A slot that's now booked** — it disappears from the picker:
+
+```js
+taken: ["2026-08-24 16:00"],
+```
+
+**Days off** — one date, or a range (both ends included):
+
+```js
+away: ["2026-12-25", "2026-09-28..2026-10-10"],
+```
+
+Three rules the file will not forgive:
+
+- Times are **`"HH:MM"` on a 24-hour clock, with the leading zero**. `"09:00"`,
+  never `"9:00"` or `"9am"`. Anything else is ignored, so a typo silently
+  removes that one time instead of breaking the picker.
+- Dates are **`"YYYY-MM-DD"`**, and a `taken` entry is the date, one space,
+  then the start time exactly as written in `week`.
+- Keep the **commas** between entries and the **quotes** around each one. A
+  missing one stops the whole file loading, and the picker then shows the
+  "nothing free" message rather than wrong times.
+
+Times are Newcastle time and daylight saving is handled for you — a 4pm
+session stays 4pm across the October changeover.
+
+To sanity-check before pushing, run the site locally (below) and look at the
+picker. If a time you expected is missing, it's almost always the leading
+zero.
 
 ---
 
@@ -128,22 +177,22 @@ files directly breaks the Adventures page and the root-relative paths.
 
 ---
 
-## Notes on tracking the enquiry form
+## Notes on tracking
 
-The enquiry form is hosted on Google Forms, on a domain you don't control, so
-the furthest point measurable from this site is the **click** on the button.
-`js/track.js` sends `generate_lead` (GA4/Google Ads) and `Lead` (Meta) at that
-moment.
+The booking form is a Netlify form on this page, so submissions are fully
+measurable — no third-party form, nothing to embed.
 
-To count actual **submissions** instead, either:
+- **`cta_click`** (`js/track.js`) fires on any button carrying
+  `data-track-cta`. On a single-page site these only scroll someone to the
+  form, so this is a navigation signal, not a lead.
+- **`booking_step`** and **`booking_mode`** (`js/schedule.js`) tell you where
+  people drop out of the three steps.
+- **`generate_lead`**, plus Meta's standard `Lead`, fires once, on the
+  `?done=1` page Netlify returns to after it has accepted the submission.
 
-- embed the Google Form in an `<iframe>` on a page of your own and track the
-  confirmation, or
-- switch to a form that redirects to a `/thanks` page on this site, and fire
-  the conversion there.
-
-The second is more reliable and gives you a cleaner conversion signal to
-optimise ad bidding against.
+Import **`generate_lead`** into Google Ads as your conversion and leave the
+rest as plain events. Counting CTA clicks as leads inflates conversions by
+roughly ten to one and will wreck your bidding.
 
 ---
 
@@ -155,6 +204,9 @@ optimise ad bidding against.
   of unstyled content.
 - `.sr-only` in `css/style.css` is load-bearing. Deleting it makes screen
   reader text ("Not yet completed:") render visibly on the objectives list.
+- The campaign cards are `<button>` elements, so their title is a styled
+  `<span role="heading">` rather than an `<h3>` — a button may only contain
+  phrasing content. Don't "fix" it back to a heading tag.
 - The site is a single page. Clicking a campaign card expands a detail panel
   inside the same grid; it opens at the end of that card's row on desktop and
   directly beneath the tapped card on a phone. Escape closes it, and
