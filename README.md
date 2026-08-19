@@ -1,5 +1,7 @@
 # Tabletop Teachings — website
 
+https://claude.ai/public/artifacts/88abd9d7-54c5-4a77-b0ea-1cd4a4d3ceb9
+
 A plain static site: HTML, CSS and a little vanilla JavaScript. No build step,
 no framework, no `npm install`. Any browser (and Netlify) serves these files
 exactly as they are.
