@@ -507,7 +507,15 @@ summary:focus-visible {
   color: var(--primary-foreground);
   white-space: nowrap;
 }
-.campaign-card h2 { font-size: 1.2rem; }
+/* The card is a <button>, which may only contain phrasing content, so the
+   title is a styled span carrying role="heading" rather than a real <h3>.
+   The old rule here targeted h2, which the card never rendered. */
+.campaign-card-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+}
 .campaign-card-tagline { font-size: 0.875rem; line-height: 1.5; color: var(--secondary-foreground); }
 
 .campaign-card-latest {
@@ -1360,64 +1368,11 @@ body { padding-bottom: 4.75rem; }
 }
 
 /* ==========================================================================
-   9. Solo / group pricing switch
-   Two radio inputs sit just before .pricing-toggle and .pricing-grid, so
-   sibling selectors can swap which set of prices is visible. No JavaScript.
+   9. Pricing
+   The Solo / Group switch was removed: only #mode-solo ever reached the
+   HTML, half these rules keyed off a #mode-group that no longer existed,
+   and the empty .pricing-toggle rendered as a stray pill above the cards.
    ========================================================================== */
-
-/* Keep the radios focusable (so they still work by keyboard) but invisible.
-   display:none would remove them from the tab order entirely. */
-.pricing-radio {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.pricing-toggle {
-  display: flex;
-  justify-content: center;
-  gap: 0.25rem;
-  width: fit-content;
-  margin: -1.5rem auto 2.5rem;
-  border-radius: 9999px;
-  border: 2px solid var(--border);
-  background: var(--card);
-  padding: 0.3rem;
-}
-.pricing-toggle label {
-  cursor: pointer;
-  border-radius: 9999px;
-  padding: 0.5rem 1.15rem;
-  font-family: var(--font-display);
-  font-size: 0.9375rem;
-  color: var(--muted-foreground);
-  transition: background-color 0.15s ease, color 0.15s ease;
-  user-select: none;
-}
-.pricing-toggle label:hover { color: var(--secondary-foreground); }
-
-#mode-group:checked ~ .pricing-toggle label[for="mode-group"],
-#mode-solo:checked ~ .pricing-toggle label[for="mode-solo"] {
-  background: var(--primary);
-  color: var(--primary-foreground);
-}
-
-/* Show the focus ring on the label when the hidden radio has focus. */
-.pricing-radio:focus-visible ~ .pricing-toggle {
-  outline: 3px solid var(--foreground);
-  outline-offset: 3px;
-}
-
-/* Swap which prices are visible. Small group is the default. */
-#mode-group:checked ~ .pricing-grid .for-solo { display: none; }
-#mode-solo:checked ~ .pricing-grid .for-group { display: none; }
-
-@media (max-width: 640px) {
-  .pricing-toggle { margin-bottom: 2rem; }
-  .pricing-toggle label { padding: 0.5rem 0.9rem; font-size: 0.875rem; }
-}
 
 /* A grid column of `1fr` still has an automatic minimum width, so a long
    unbroken price string can force the whole row wider than the page. Cap the
