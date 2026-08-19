@@ -1,8 +1,8 @@
 // ═══════════════════════════════════════════════════════════════════════════
 // Renders the campaign cards from ADVENTURES (see adventures-data.js) into
 // #home-quests-grid, and expands a full detail panel inline when a card is
-// clicked. This replaces the old js/home-quests.js + js/adventures.js pair —
-// there is no separate /adventures/ page any more.
+// clicked. There is no separate /adventures/ page — this is the whole
+// Adventures section.
 //
 // The panel is inserted into the same CSS grid as the cards and spans every
 // column, so on desktop it opens as a full-width row beneath the cards and on
@@ -40,10 +40,16 @@
   let openSlug = null; // null = every card collapsed
   let activeTab = TABS[0];
 
+  // Safe for both text nodes and attribute values. textContent/innerHTML
+  // alone leaves " and ' untouched, and this output goes into attributes
+  // like data-slug="..." and aria-label="...".
   function esc(str) {
-    const div = document.createElement("div");
-    div.textContent = str;
-    return div.innerHTML;
+    return String(str == null ? "" : str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
   }
 
   function isRecruiting(adv) {
@@ -82,7 +88,8 @@
 
     return `
       <button type="button" class="campaign-card tone-${adv.tone} ${open ? "is-active" : ""}"
-        data-slug="${esc(adv.slug)}" aria-expanded="${open}" aria-controls="quest-panel"
+        data-slug="${esc(adv.slug)}" aria-expanded="${open}"
+        ${open ? 'aria-controls="quest-panel"' : ""}
         style="${openStyle}">
         <span class="campaign-card-head">
           <span class="campaign-icon" style="background-color: var(--${adv.tone});">
@@ -90,15 +97,16 @@
           </span>
           <span class="campaign-tag" style="background-color: var(--${adv.tone});">${esc(adv.sessions)}</span>
         </span>
-        <h3 style="color: color-mix(in oklab, var(--${adv.tone}) 78%, black);">${esc(adv.name)}</h3>
-        <p class="campaign-card-tagline">${esc(adv.tagline)}</p>
+        <span class="campaign-card-title" role="heading" aria-level="3"
+          style="color: color-mix(in oklab, var(--${adv.tone}) 78%, black);">${esc(adv.name)}</span>
+        <span class="campaign-card-tagline">${esc(adv.tagline)}</span>
         ${adv.spots ? `<span class="campaign-card-spots">${esc(adv.spots)}</span>` : ""}
         ${
           latest && !isRecruiting(adv)
-            ? `<p class="campaign-card-latest">
+            ? `<span class="campaign-card-latest">
                 <span class="latest-dot" style="background-color: var(--${adv.tone});"></span>
                 Latest: <strong>${esc(latest.title)}</strong>
-              </p>`
+              </span>`
             : ""
         }
         ${
@@ -165,11 +173,15 @@
   }
 
   function renderLearning(adv) {
-    const done = adv.objectives.filter((o) => o.done).length;
-    const pct = Math.round((done / adv.objectives.length) * 100);
+    const objectives = Array.isArray(adv.objectives) ? adv.objectives : [];
+    if (!objectives.length) {
+      return `<p class="timeline-empty">The learning goals for this quest are still being written.</p>`;
+    }
+    const done = objectives.filter((o) => o.done).length;
+    const pct = Math.round((done / objectives.length) * 100);
     const upcoming = isRecruiting(adv);
 
-    const items = adv.objectives
+    const items = objectives
       .map((o) => {
         const tone = SKILL_TONE[o.skill];
         return `
@@ -185,9 +197,9 @@
     // Nothing to chart on a quest that hasn't started — show the goals instead
     // of a 0% progress bar.
     const header = upcoming
-      ? `<div class="progress-header"><p>The ${adv.objectives.length} goals this quest is built around</p></div>`
+      ? `<div class="progress-header"><p>The ${objectives.length} goals this quest is built around</p></div>`
       : `<div class="progress-header">
-           <p>${done} of ${adv.objectives.length} objectives completed</p>
+           <p>${done} of ${objectives.length} objectives completed</p>
            <span class="progress-pct">${pct}%</span>
          </div>
          <div class="progress-track" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="${esc(adv.name)} learning progress" style="--current-tone: var(--${adv.tone});">
