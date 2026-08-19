@@ -29,8 +29,9 @@
 
   // Start times on a 24-hour clock. An empty day isn't offered at all.
   var WEEK = CFG.week || {
-    mon: ["16:00", "17:15"], tue: [], wed: ["16:00", "17:15"],
-    thu: ["16:00", "17:15"], fri: [], sat: ["09:00", "10:15", "11:30"], sun: [],
+    mon: ["", ""], tue: [], wed: ["", ""],
+    thu: ["", ""], fri: [], sat: ["", "", ""],
+    sun: [],
   };
 
   // Sessions already booked, as "YYYY-MM-DD HH:MM".
