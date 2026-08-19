@@ -1,0 +1,595 @@
+/* ==========================================================================
+   Booking — Tabletop Teachings
+   Loaded by index.html after css/style.css. Every colour comes from the
+   tokens in style.css; the only new value is a distinct error red, because
+   --accent is already the "click me" colour and must not double as a warning.
+
+   Contents
+     NOTE: .step and .steps belong to the "how it works" component in
+   style.css (.step sets max-width:18rem and text-align:center). The booking
+   flow uses .bk-step / .bk-steps instead. Don't rename them back.
+
+   1. Shell
+     2. Book / waitlist switch
+     3. Progress steps
+     4. Time picker
+     5. Fields + validation
+     6. Review + submit
+     7. Done
+     8. Responsive, motion, print
+   ========================================================================== */
+
+.booking-section {
+  /* Fallbacks: style.css owns these tokens, but the section must still look
+     right if it loads first or fails. */
+  --bk-radius-sm: var(--radius-sm, 0.5rem);
+  --bk-radius-md: var(--radius-md, 0.875rem);
+  --bk-radius-lg: var(--radius-lg, 1.25rem);
+  --bk-radius-xl: var(--radius-xl, 2rem);
+  --bk-danger: oklch(0.5 0.17 27);
+  --bk-danger-soft: oklch(0.95 0.03 27);
+  --bk-ok: var(--quest-3, oklch(0.72 0.14 158));
+
+  border-radius: var(--radius-2xl, 3rem);
+  border: 4px dashed color-mix(in oklab, var(--accent) 40%, transparent);
+  background: var(--secondary);
+  padding: 2.5rem 1.25rem;
+  scroll-margin-top: 5rem;
+}
+.booking-section .section-title { margin-bottom: 0.75rem; color: var(--primary); }
+.booking-section .section-sub { margin: 0 auto 2rem !important; }
+
+/* The form is a reading task. Cap it near 38rem so lines stay short and the
+   eye never has to travel across a 64rem container to find the next field. */
+.booking-shell { max-width: 38rem; margin-inline: auto; }
+
+/* [hidden] has to win against the display rules below it. */
+.booking-section [hidden] { display: none !important; }
+
+.booking-sr {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.booking-h {
+  margin-bottom: 0.35rem;
+  font-size: 1.375rem;
+  color: var(--secondary-foreground);
+}
+.booking-h:focus { outline: none; }
+.block-sub {
+  margin-bottom: 1.25rem;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+}
+
+/* Honeypot — invisible to people, irresistible to bots. */
+.hp-field { position: absolute; left: -9999px; opacity: 0; }
+
+/* ---- 2. Book / waitlist switch ------------------------------------------ */
+/* Radios stay in the DOM and stay focusable: display:none would drop them
+   from the tab order, and the panel switching below is pure CSS so the two
+   tabs keep working if JavaScript never arrives. */
+.mode-radio {
+  position: absolute;
+  width: 1px; height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+.mode-toggle {
+  display: flex;
+  gap: 0.25rem;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto 1.75rem;
+  border-radius: 9999px;
+  border: 2px solid var(--border);
+  background: var(--card);
+  padding: 0.3rem;
+  scroll-margin-top: 6rem;
+}
+.mode-toggle label {
+  cursor: pointer;
+  border-radius: 9999px;
+  padding: 0.6rem 1.35rem;
+  font-family: var(--font-display);
+  font-size: 0.9375rem;
+  line-height: 1.2;
+  color: var(--muted-foreground);
+  text-align: center;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  user-select: none;
+}
+.mode-toggle label:hover { color: var(--secondary-foreground); }
+#mode-book:checked ~ .mode-toggle label[for="mode-book"],
+#mode-waitlist:checked ~ .mode-toggle label[for="mode-waitlist"] {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+.mode-radio:focus-visible ~ .mode-toggle {
+  outline: 3px solid var(--foreground);
+  outline-offset: 3px;
+}
+
+/* One panel at a time. The booking steps and the waitlist are each wrapped in
+   one panel that sits directly beside the radios, so the plain `~` pairs do
+   the work; the `~ *` pairs stay for any panel nested deeper. */
+#mode-book:checked ~ .panel-waitlist,
+#mode-waitlist:checked ~ .panel-book,
+#mode-book:checked ~ * .panel-waitlist,
+#mode-waitlist:checked ~ * .panel-book { display: none; }
+#mode-book:checked ~ * .label-waitlist,
+#mode-waitlist:checked ~ * .label-book { display: none; }
+
+/* The three dots belong to the booking flow. The waitlist is one screen and
+   must never look like the front of a queue of steps. */
+#mode-waitlist:checked ~ .bk-steps { display: none; }
+
+/* An inline "switch tabs" link. It's a <label>, so it needs no JavaScript. */
+.mode-link {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.mode-nudge {
+  margin-top: 1.25rem;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+}
+
+/* ---- 2b. Waitlist panel -------------------------------------------------- */
+/* One screen, no steps, no time picker. Everything here is deliberately
+   plainer than the booking flow: the whole point is that it's over quickly. */
+.bk-waitlist { margin: 0; }
+.bk-waitlist .booking-h { margin-bottom: 0.35rem; }
+.bk-waitlist .wl-submit { margin-top: 0.5rem; }
+
+/* A quiet line reminding people that one-on-one sessions don't need a queue. */
+.wl-alt {
+  margin-top: 1.5rem;
+  padding-top: 1.15rem;
+  border-top: 2px dotted var(--border);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+}
+
+/* ---- 3. Progress steps --------------------------------------------------- */
+/* Revealed by JavaScript. Without it every step is simply visible at once,
+   which is a longer form but a working one. */
+.bk-steps {
+  display: flex;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0 0 1.75rem;
+  padding: 0;
+  counter-reset: step;
+}
+.bk-steps li {
+  flex: 1;
+  padding-top: 0.6rem;
+  border-top: 4px solid var(--border);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--muted-foreground);
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.bk-steps li::before {
+  counter-increment: step;
+  content: counter(step) ". ";
+}
+.bk-steps li[data-state="current"] { border-top-color: var(--primary); color: var(--secondary-foreground); }
+.bk-steps li[data-state="done"] { border-top-color: var(--bk-ok); color: var(--muted-foreground); }
+.bk-steps li[data-state="done"]::before { content: "\2713  "; }
+
+.bk-step { margin: 0; padding: 0; border: 0; }
+.bk-step + .bk-step { margin-top: 2.5rem; }
+.js-bk-steps .bk-step + .bk-step { margin-top: 0; }
+
+/* ---- 4. Time picker ------------------------------------------------------ */
+.slots-loading, .slots-empty {
+  border-radius: var(--bk-radius-md);
+  border: 2px dashed var(--border);
+  padding: 1.25rem;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+}
+.slots-empty { background: var(--card); }
+.slots-empty strong { display: block; margin-bottom: 0.35rem; color: var(--secondary-foreground); }
+
+.week-group { margin-bottom: 1.5rem; }
+.week-label {
+  margin-bottom: 0.6rem;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--secondary-foreground);
+}
+
+/* Days wrap rather than scroll sideways: a horizontal scroller hides the
+   later days behind a gesture people miss on a first visit. */
+.day-row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+.day-chip, .time-chip {
+  cursor: pointer;
+  border-radius: var(--bk-radius-md);
+  border: 2px solid var(--border);
+  background: var(--card);
+  font-family: var(--font-display);
+  color: var(--secondary-foreground);
+  transition: border-color 0.15s ease, background-color 0.15s ease, transform 0.1s ease;
+}
+.day-chip {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 5.75rem;
+  min-height: 3.5rem;          /* comfortable thumb target */
+  padding: 0.55rem 0.85rem;
+  text-align: left;
+  font-size: 1rem;
+}
+.day-chip .day-free {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--muted-foreground);
+}
+.day-chip:hover, .time-chip:hover { border-color: var(--primary); background: var(--muted); }
+.day-chip:active, .time-chip:active { transform: translateY(1px); }
+.day-chip[aria-pressed="true"] {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--primary-foreground);
+}
+.day-chip[aria-pressed="true"] .day-free { color: color-mix(in oklab, var(--primary-foreground) 80%, transparent); }
+
+.day-chip.is-soonest { border-color: color-mix(in oklab, var(--bk-ok) 65%, transparent); }
+.soonest-flag {
+  display: inline-block;
+  margin-left: 0.4rem;
+  border-radius: 9999px;
+  background: var(--bk-ok);
+  padding: 0.1rem 0.45rem;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--primary-foreground);
+  vertical-align: 0.1em;
+}
+
+.more-dates {
+  cursor: pointer;
+  border: 0;
+  background: none;
+  padding: 0.5rem 0;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Times appear under the chosen day, not in a separate column, so the two
+   choices read as one sentence: this day, then this time. */
+.time-panel {
+  margin-top: 1.25rem;
+  border-radius: var(--bk-radius-lg);
+  border: 3px solid var(--border);
+  background: var(--card);
+  padding: 1.15rem 1.25rem;
+}
+.time-panel h4 {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  color: var(--secondary-foreground);
+}
+.time-row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.time-chip {
+  min-height: 3rem;
+  padding: 0.65rem 1.15rem;
+  font-size: 1rem;
+}
+.time-chip[aria-pressed="true"] {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--primary-foreground);
+}
+.time-chip[aria-pressed="true"]::before { content: "\2713  "; }
+
+.session-summary {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin-top: 1.25rem;
+  border-radius: var(--bk-radius-md);
+  border: 2px solid color-mix(in oklab, var(--bk-ok) 45%, transparent);
+  background: color-mix(in oklab, var(--bk-ok) 10%, var(--card));
+  padding: 0.85rem 1rem;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--secondary-foreground);
+}
+.session-summary b { font-family: var(--font-display); font-weight: 400; }
+
+/* ---- 5. Fields + validation ---------------------------------------------- */
+.field-row { display: grid; grid-template-columns: 1fr; gap: 0 1rem; }
+.field { margin-bottom: 1.35rem; }
+.field > label, .radio-set > legend {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--secondary-foreground);
+}
+.optional {
+  margin-left: 0.3rem;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  color: var(--muted-foreground);
+}
+.field input, .field select, .field textarea {
+  width: 100%;
+  min-height: 3rem;
+  border-radius: var(--bk-radius-sm);
+  border: 2px solid var(--border);
+  background: var(--card);
+  padding: 0.75rem 0.9rem;
+  font-family: var(--font-body);
+  font-size: 1rem;             /* 16px stops iOS zooming on focus */
+  color: var(--foreground);
+  transition: border-color 0.15s ease;
+}
+.field textarea { resize: vertical; line-height: 1.55; }
+.field input:focus, .field select:focus, .field textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+.field-hint { margin-top: 0.35rem; font-size: 0.8125rem; line-height: 1.5; color: var(--muted-foreground); }
+
+/* Errors are never colour alone: they carry a "!" and sit next to the field
+   they describe, in words that say what to do rather than what went wrong. */
+.field-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  margin-top: 0.4rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--bk-danger);
+}
+.field-error::before {
+  content: "!";
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.05rem; height: 1.05rem;
+  border-radius: 9999px;
+  background: var(--bk-danger);
+  font-size: 0.75rem;
+  color: var(--card);
+}
+.field.is-invalid input,
+.field.is-invalid select,
+.field.is-invalid textarea,
+.radio-set.is-invalid .radio-chip { border-color: var(--bk-danger); }
+.field.is-invalid input, .field.is-invalid textarea { background: var(--bk-danger-soft); }
+
+.error-summary {
+  margin-bottom: 1.5rem;
+  border-radius: var(--bk-radius-md);
+  border: 2px solid var(--bk-danger);
+  background: var(--bk-danger-soft);
+  padding: 1rem 1.15rem;
+}
+.error-summary h4 {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--bk-danger);
+}
+.error-summary ul { margin: 0; padding-left: 1.1rem; font-size: 0.9375rem; line-height: 1.7; }
+.error-summary a { color: var(--bk-danger); text-decoration: underline; font-weight: 700; }
+
+.check-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  margin: 0.5rem 0 0.5rem;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--secondary-foreground);
+  cursor: pointer;
+}
+.check-row input {
+  flex-shrink: 0;
+  width: 1.35rem; height: 1.35rem;
+  margin-top: 0.1rem;
+  accent-color: var(--primary);
+}
+
+/* Chip sets: goals and waitlist type. One tap beats a blank textarea. */
+.radio-set { display: block; border: 0; padding: 0; margin: 0 0 1.35rem; }
+.chip-wrap { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+.radio-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  cursor: pointer;
+  border-radius: 9999px;
+  border: 2px solid var(--border);
+  background: var(--card);
+  padding: 0.5rem 1.1rem;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--secondary-foreground);
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+.radio-chip input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.radio-chip:hover { border-color: var(--primary); }
+.radio-chip:has(input:checked) {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--primary-foreground);
+}
+.radio-chip:has(input:checked) span::before { content: "\2713  "; }
+
+/* One visible focus ring for everything that takes focus in here. */
+.booking-section :is(button, [href], input, select, textarea):focus-visible,
+.radio-chip:has(input:focus-visible),
+.time-chip:focus-visible,
+.day-chip:focus-visible {
+  outline: 3px solid var(--foreground);
+  outline-offset: 2px;
+}
+
+/* ---- 6. Review + submit -------------------------------------------------- */
+.review-card {
+  border-radius: var(--bk-radius-lg);
+  border: 3px solid var(--border);
+  background: var(--card);
+  padding: 1.25rem 1.35rem;
+  margin-bottom: 1.5rem;
+}
+.review-card dl { display: grid; grid-template-columns: auto 1fr; gap: 0.55rem 1rem; margin: 0; }
+.review-card dt {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted-foreground);
+  padding-top: 0.1rem;
+}
+.review-card dd { margin: 0; font-size: 0.9375rem; line-height: 1.5; color: var(--secondary-foreground); }
+.review-edit {
+  margin-top: 1rem;
+  padding-top: 0.9rem;
+  border-top: 2px dotted var(--border);
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+}
+.review-edit button {
+  cursor: pointer;
+  border: 0; background: none; padding: 0;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.step-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
+.step-nav .btn { margin: 0; }
+.step-next { flex: 1 1 12rem; }
+.step-back {
+  cursor: pointer;
+  border: 0; background: none;
+  padding: 0.75rem 0.25rem;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--muted-foreground);
+}
+.step-back:hover { color: var(--secondary-foreground); }
+.step-back::before { content: "\2190  "; }
+
+.check-field { margin-bottom: 0.5rem; }
+
+.booking-section .privacy-note, .pay-note {
+  margin-top: 0.9rem;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--muted-foreground);
+}
+.pay-note { text-align: center; }
+.booking-alt {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.9375rem;
+  color: var(--muted-foreground);
+}
+.booking-alt a { font-weight: 700; color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+
+.is-sending { opacity: 0.7; pointer-events: none; }
+
+/* ---- 7. Done ------------------------------------------------------------- */
+.done-card {
+  max-width: 34rem;
+  margin-inline: auto;
+  border-radius: var(--bk-radius-xl);
+  border: 4px solid var(--card);
+  background: var(--card);
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  box-shadow: var(--shadow-parchment, 0 8px 24px oklch(0 0 0 / 0.08));
+}
+.done-card:focus { outline: none; }
+.done-tick {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem; height: 3.5rem;
+  margin: 0 auto 1.25rem;
+  border-radius: 9999px;
+  background: var(--bk-ok);
+  color: var(--primary-foreground);
+  font-size: 1.75rem;
+}
+.done-card h3 { margin-bottom: 0.85rem; font-size: 1.75rem; color: var(--primary); }
+.done-card p { margin-bottom: 0.75rem; line-height: 1.65; color: var(--secondary-foreground); }
+.done-next {
+  margin: 1.5rem auto 0;
+  border-top: 2px dotted var(--border);
+  padding-top: 1.25rem;
+  font-size: 0.9375rem;
+  color: var(--muted-foreground);
+}
+
+/* ---- 8. Responsive, motion, print ---------------------------------------- */
+@media (min-width: 640px) {
+  .booking-section { padding: 3rem 2rem; }
+  .field-row { grid-template-columns: 1fr 1fr; }
+  .bk-steps li { font-size: 0.875rem; }
+}
+@media (min-width: 768px) {
+  .booking-section { padding: 3.5rem 3rem; }
+  .time-panel { padding: 1.35rem 1.5rem; }
+  .done-card { padding: 3rem; }
+}
+@media (max-width: 420px) {
+  .mode-toggle label { padding: 0.6rem 0.85rem; font-size: 0.875rem; }
+  .day-chip { flex: 1 1 8rem; min-width: 0; }
+  .bk-steps li { font-size: 0.75rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .booking-section *, .booking-section *::before { transition-duration: 0.01ms !important; }
+}
+@media print {
+  .mode-toggle, .bk-steps, .step-nav, .more-dates { display: none !important; }
+  .bk-step { display: block !important; }
+  /* On paper there are no tabs, so show both paths rather than whichever one
+     happened to be open. */
+  #mode-book:checked ~ .panel-waitlist,
+  #mode-waitlist:checked ~ .panel-book { display: block !important; }
+}
