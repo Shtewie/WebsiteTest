@@ -1,8 +1,11 @@
 // ═══════════════════════════════════════════════════════════════════════════
 // Booking — Tabletop Teachings
 //
-// Everything you'll ever need to change is in the EDIT THIS block below.
-// Nothing under it needs touching.
+// Your teaching week, your booked slots and your holidays all live in
+// js/schedule.js now. To change any of them, open admin.html, click your
+// changes, and download the new schedule.js over the old one.
+//
+// Nothing in this file needs editing.
 //
 // Two separate paths share one form:
 //   Book a session   → three steps: pick a time, your details, check and send.
@@ -15,48 +18,32 @@
   "use strict";
 
   // ╔═══════════════════════════════════════════════════════════════════════╗
-  // ║  EDIT THIS                                                            ║
+  // ║  Schedule                                                             ║
+  // ║  Loaded from js/schedule.js. The values below are only a safety net   ║
+  // ║  for the case where that file is missing or hasn't loaded — without   ║
+  // ║  them a broken schedule file would leave parents staring at an empty  ║
+  // ║  picker with no way to tell you about it.                             ║
   // ╚═══════════════════════════════════════════════════════════════════════╝
 
-  // Your normal teaching week. These are START times on a 24-hour clock:
-  //   "16:00" = 4pm      "17:15" = 5:15pm      "09:00" = 9am
-  // An empty day isn't offered at all.
-  //
-  // Use this for permanent changes only — "I no longer teach Tuesdays".
-  // To block one week's session, use TAKEN below instead.
-  var WEEK = {
-    mon: [],
-    tue: ["16:00", "17:15"],
-    wed: ["16:00", "17:15"],
-    thu: ["16:00", "17:15"],
-    fri: [],
-    sat: ["09:00", "10:15", "11:30"],
-    sun: [],
+  var CFG = window.TT_SCHEDULE || {};
+
+  // Start times on a 24-hour clock. An empty day isn't offered at all.
+  var WEEK = CFG.week || {
+    mon: [], tue: ["16:00", "17:15"], wed: ["16:00", "17:15"],
+    thu: ["16:00", "17:15"], fri: [], sat: ["09:00", "10:15", "11:30"], sun: [],
   };
 
-  // Single sessions that are already booked. One line each, "YYYY-MM-DD HH:MM".
-  // This is the one you'll edit most: when a family books Thursday the 21st at
-  // 4pm, add it here and that button disappears for everyone else.
-  // Old lines do no harm — clear them out whenever you like.
-  var TAKEN = [
-    // "2026-08-20 16:00",
-    // "2026-08-22 09:00",
-  ];
+  // Sessions already booked, as "YYYY-MM-DD HH:MM".
+  var TAKEN = CFG.taken || [];
 
-  // Whole days you're away. A single date, or a range with two dots:
-  //   "2026-09-28"                  one day
-  //   "2026-09-28..2026-10-10"      school holidays, a trip, anything
-  var AWAY = [
-    // "2026-09-28..2026-10-10",
-  ];
+  // Whole days off. A single date, or a range written "2026-09-28..2026-10-10".
+  var AWAY = CFG.away || [];
 
-  // A weekly student who holds the same slot every week: add it to TAKEN each
-  // time, or simply delete that time from WEEK until they finish.
-
-  var WEEKS_AHEAD = 6;        // how far ahead people can book
-  var MIN_NOTICE_HOURS = 24;  // don't offer anything sooner than this
-  var SESSION_MINUTES = 60;   // length of one session
-  var WEEKS_SHOWN = 2;        // weeks visible before "Show more dates"
+  var WEEKS_AHEAD = CFG.weeksAhead || 6;            // how far ahead people can book
+  var MIN_NOTICE_HOURS = CFG.minNoticeHours != null // don't offer anything sooner
+    ? CFG.minNoticeHours : 24;
+  var SESSION_MINUTES = CFG.sessionMinutes || 60;   // length of one session
+  var WEEKS_SHOWN = CFG.weeksShown || 2;            // weeks visible before "Show more dates"
 
   // ╔═══════════════════════════════════════════════════════════════════════╗
   // ║  Below here is just the code that turns the above into buttons.       ║
