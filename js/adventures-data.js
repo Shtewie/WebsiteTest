@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // ADVENTURES DATA — the campaign content for the whole site.
-// This one file drives the /adventures/ page AND the homepage
-// teaser. Edit here, not in the HTML.
+// This one file drives the Adventures section on the homepage.
+// Edit here, not in the HTML.
 //
 // Field guide:
 //  - "tone"     must be one of: quest-1 … quest-6
@@ -11,7 +11,10 @@
 //               progress bar.
 //  - "spots"    the short line shown in the badge, e.g.
 //               "3 spots open" or "Full — waitlist open".
-//               Keep it honest; scarcity only works once.
+//               Keep it honest; scarcity only works once. It is
+//               printed as-is, so include the number yourself —
+//               "Now recruiting" is the safe wording when you
+//               would rather not commit to a count.
 //  - "sessions" free text. If it contains "N of M" (e.g.
 //               "Session 6 of 10") a progress bar is drawn.
 //  - "skill"    on each objective must be exactly "Reading",
@@ -21,8 +24,7 @@
 //               Never put a real child's name here; use
 //               "Player A" style labels only.
 //
-// The homepage teaser shows the FIRST THREE campaigns in this
-// array — reorder them here to change that.
+// Every campaign in this array is shown, in this order.
 // ═══════════════════════════════════════════════════════════════
 
 const ADVENTURES = [
@@ -107,7 +109,7 @@ const ADVENTURES = [
     "group": "Ages 13–15",
     "sessions": "Starting soon",
     "status": "recruiting",
-    "spots": "spots open",
+    "spots": "Now recruiting",
     "blurb": "Jubilation fills the air, students fill the halls, and a new dawn rises over the grounds of the Gillview Institute. Headmaster Gill Octavius III, Viscount of Ardenvale and heir to the throne of Fellmore welcomes you with all the poise and elegance that only one with a title that long can carry. Will you study with the wizards, train with the barbarians, sing with the bards, or forge your own path entirely? Gillview is where you find out what kind of adventurer you really are.",
     "world": [
       {
@@ -165,7 +167,7 @@ const ADVENTURES = [
     "group": "Ages 15–18",
     "sessions": "Starting soon",
     "status": "recruiting",
-    "spots": "spots open",
+    "spots": "Now recruiting",
     "blurb": "Martin Point a city built on a rift in the fabric of the universe began as a waypoint for weary inter-dimensional travellers has now grown into a metropolis. Its maze of back alleys, shopfronts and towering megaliths of industry rests on the shoulders of a powerless workforce. Now the curious death of Mayvil Aberneth, leader of the workers' movement, has pulled at a thread causing a whole web of deceit, propaganda and manipulation to unravel. What happened to Mayvil Aberneth? Who can you trust? And how will you bring justice to Martin Point?",
     "world": [],
     "characters": [
@@ -174,7 +176,7 @@ const ADVENTURES = [
         "player": "Non-Player Character",
         "role": "Organiser, Martin Point Workers' Union",
         "note": "In a city as large as Martin Point people slip between the cracks, Mayvil was the one to pull them back up, now that she has fallen it is on the city to return that kindness. The official record says an accident. The official record says a lot of things."
-      },
+      }
     ],
     "objectives": [
       {
@@ -218,6 +220,7 @@ const SKILL_TONE = {
   "Social": "quest-3"
 };
 
-// Where every "join this quest" button points. Change it in one place here
-// and it updates on both the homepage and the adventures page.
-const JOIN_URL = "https://forms.gle/FaDSAM434s5T8QVz7";
+// Where every "join this quest" button points. "#contact" is the booking
+// form further down this page — the only booking path on the site. Only
+// change this if you deliberately want quest enquiries going somewhere else.
+const JOIN_URL = "#contact";

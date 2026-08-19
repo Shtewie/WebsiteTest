@@ -2,10 +2,9 @@
 // Booking — Tabletop Teachings
 //
 // Your teaching week, your booked slots and your holidays all live in
-// js/schedule.js now. To change any of them, open admin.html, click your
-// changes, and download the new schedule.js over the old one.
+// js/availability.js. Open that file to change any of them.
 //
-// Nothing in this file needs editing.
+// Nothing in THIS file needs editing.
 //
 // Two separate paths share one form:
 //   Book a session   → three steps: pick a time, your details, check and send.
@@ -19,19 +18,17 @@
 
   // ╔═══════════════════════════════════════════════════════════════════════╗
   // ║  Schedule                                                             ║
-  // ║  Loaded from js/schedule.js. The values below are only a safety net   ║
-  // ║  for the case where that file is missing or hasn't loaded — without   ║
-  // ║  them a broken schedule file would leave parents staring at an empty  ║
-  // ║  picker with no way to tell you about it.                             ║
+  // ║  Loaded from js/availability.js. If that file is missing or fails to  ║
+  // ║  parse, the week below is deliberately empty: the picker then shows   ║
+  // ║  the "nothing free" message that points people at the waitlist,       ║
+  // ║  rather than inventing times you never agreed to teach.               ║
   // ╚═══════════════════════════════════════════════════════════════════════╝
 
   var CFG = window.TT_SCHEDULE || {};
 
   // Start times on a 24-hour clock. An empty day isn't offered at all.
   var WEEK = CFG.week || {
-    mon: ["13:30", ""], tue: [], wed: ["", ""],
-    thu: ["", ""], fri: [], sat: ["", "", ""],
-    sun: [],
+    mon: [], tue: [], wed: [], thu: [], fri: [], sat: [], sun: [],
   };
 
   // Sessions already booked, as "YYYY-MM-DD HH:MM".
@@ -49,6 +46,9 @@
   // ╔═══════════════════════════════════════════════════════════════════════╗
   // ║  Below here is just the code that turns the above into buttons.       ║
   // ╚═══════════════════════════════════════════════════════════════════════╝
+
+  // "HH:MM", 00:00–23:59, leading zero required.
+  var VALID_TIME = /^([01]\d|2[0-3]):[0-5]\d$/;
 
   var TZ = "Australia/Sydney";
   var KEYS = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
@@ -125,6 +125,10 @@
 
       if (!away[date]) {
         (WEEK[KEYS[dow]] || []).forEach(function (time) {
+          // A time must be exactly "HH:MM" on a 24-hour clock. Anything else
+          // — a blank string, "9:00", a stray comma — is skipped. Without
+          // this, "" became +"" === 0 and the picker offered midnight.
+          if (!VALID_TIME.test(time)) return;
           if (taken[date + " " + time]) return;
           var start = instantOf(y, m, d, +time.slice(0, 2), +time.slice(3, 5));
           var end = start + SESSION_MINUTES * 60000;
@@ -559,11 +563,9 @@
     if (checkedLabels("goal")) rows.push(["Working on", checkedLabels("goal")]);
     rows.push(["You", (val("parent-name") || "\u2014") + " \u00b7 " + (val("parent-email") || "\u2014") +
       (val("parent-phone") ? " \u00b7 " + val("parent-phone") : "")]);
-    // Read the address back in full. It's the one answer a parent most needs
-    // to see spelled out before they send it.
-    var where = [val("street-address"), val("suburb"), val("postcode")]
-      .filter(Boolean).join(", ");
-    rows.push(["Where", where || "\u2014"]);
+    // The form asks for the suburb only — the exact address is sorted out by
+    // email once the session is confirmed.
+    rows.push(["Where", val("suburb") || "\u2014"]);
 
     var dl = el("dl");
     rows.forEach(function (r) {
@@ -596,24 +598,10 @@
     } catch (e) { /* analytics must never break a booking */ }
   }
 
-  // Anything already typed on one side is worth keeping when the person hops
-  // to the other. Only ever fills a blank — never overwrites.
-  var CARRY = [
-    ["parent-name", "wl-parent-name"],
-    ["parent-email", "wl-parent-email"],
-    ["suburb", "wl-suburb"],
-    ["student-first-name", "wl-student-first-name"],
-    ["student-year", "wl-student-year"],
-  ];
-
-  function carryOver(toWaitlist) {
-    CARRY.forEach(function (pair) {
-      var from = document.getElementById(toWaitlist ? pair[0] : pair[1]);
-      var to = document.getElementById(toWaitlist ? pair[1] : pair[0]);
-      if (!from || !to) return;
-      if ((from.value || "").trim() && !(to.value || "").trim()) to.value = from.value;
-    });
-  }
+  // Both paths share the same name / email / student fields (steps 2 and 3
+  // sit outside either panel), so there is nothing to copy between them.
+  // An earlier version duplicated those fields with wl- prefixed ids and
+  // copied values across; those fields no longer exist.
 
   // Switching tabs is a fresh start for the side you're arriving at. Errors,
   // the chosen time and the step you'd reached all belong to the side you just
@@ -632,12 +620,13 @@
       n.removeAttribute("aria-invalid");
     });
 
-    carryOver(waitlist);
     resetPicker();
 
     if (waitlist) {
       if (userInitiated) {
-        var h = document.getElementById("waitlist-heading");
+        // The waitlist panel's own heading, not a separate element — the id
+        // this used to look for was removed from the HTML long ago.
+        var h = waitPanel && waitPanel.querySelector("[data-step-heading]");
         if (h) h.focus({ preventScroll: true });
         scrollToForm();
       }
@@ -671,7 +660,13 @@
       var done = document.getElementById("done");
       if (done) { done.hidden = false; done.focus(); }
       form.hidden = true;
+      // The one and only conversion event on the site. js/track.js reports
+      // CTA clicks as cta_click and never as a lead, so this fires once per
+      // booking rather than once per button someone taps on the way here.
       track("generate_lead", { form: "booking" });
+      try {
+        if (window.fbq) window.fbq("track", "Lead", { content_name: "booking" });
+      } catch (e) { /* analytics must never break the confirmation screen */ }
       return;
     }
 
@@ -759,7 +754,10 @@
         btn.classList.add("is-sending");
         btn.textContent = "Sending\u2026";
       }
-      track("generate_lead", { form: "booking", mode: isWaitlist() ? "waitlist" : "session" });
+      // NOT a conversion event: the send can still fail. The single
+      // generate_lead for a booking is fired on the ?done=1 landing above,
+      // which is only reached once Netlify has accepted the submission.
+      track("booking_submit", { mode: isWaitlist() ? "waitlist" : "session" });
     });
   }
 
