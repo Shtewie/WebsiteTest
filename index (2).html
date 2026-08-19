@@ -1,0 +1,805 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <!-- charset and viewport MUST stay first: charset has to appear within the
+       first 1024 bytes of the document. Never put a script above these. -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>In-Home D&amp;D Tutoring for Kids in Newcastle NSW | Tabletop Teachings</title>
+  <meta name="author" content="Tabletop Teachings" />
+  <meta name="description" content="In-home tutoring for kids aged 8–18 across Newcastle, Lake Macquarie and Maitland NSW. Reading, writing and confidence goals taught through Dungeons &amp; Dragons. All equipment provided, from $50 a session." />
+  <link rel="canonical" href="https://tabletopteachings.com/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Tabletop Teachings" />
+  <meta property="og:url" content="https://tabletopteachings.com/" />
+  <meta property="og:title" content="In-Home D&amp;D Tutoring for Kids in Newcastle NSW" />
+  <meta property="og:description" content="Reading, writing and confidence, taught at your kitchen table through Dungeons &amp; Dragons. Ages 8–18. All equipment provided." />
+  <meta property="og:image" content="https://tabletopteachings.com/assets/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Tabletop Teachings — D&amp;D adventures that teach reading, writing and confidence." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="In-Home D&amp;D Tutoring for Kids in Newcastle NSW" />
+  <meta name="twitter:description" content="Reading, writing and confidence, taught at your kitchen table through Dungeons &amp; Dragons. Ages 8–18." />
+  <meta name="twitter:image" content="https://tabletopteachings.com/assets/og-image.png" />
+  <meta name="theme-color" content="#f6efe2" />
+
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+
+  <!-- Critical, above-the-fold CSS inlined so the page paints without
+       waiting on any network request. The full stylesheet below fills in
+       everything else once it arrives; values here are kept in sync with
+       css/style.css. -->
+  <style>
+    :root{--background:oklch(0.968 0.018 85);--foreground:oklch(0.245 0.032 60);--card:oklch(0.985 0.012 88);--secondary:oklch(0.955 0.024 88);--secondary-foreground:oklch(0.36 0.05 62);--primary:oklch(0.72 0.16 68);--primary-foreground:oklch(0.99 0.006 90);--accent:oklch(0.63 0.19 18);--accent-foreground:oklch(0.99 0.006 90);--muted:oklch(0.955 0.014 90);--muted-foreground:oklch(0.53 0.028 70);--border:oklch(0.9 0.026 84);--quest-3:oklch(0.72 0.14 158);--radius-2xl:3rem;--font-display:"Fredoka",system-ui,sans-serif;--font-body:"Quicksand",system-ui,sans-serif}
+    *,*::before,*::after{box-sizing:border-box}
+    body{margin:0;background-color:var(--background);color:var(--foreground);font-family:var(--font-body);-webkit-font-smoothing:antialiased;padding-bottom:4.75rem}
+    h1,h2,h3{font-family:var(--font-display);letter-spacing:.01em;margin:0}
+    p{margin:0}a{color:inherit;text-decoration:none}
+    .container{width:100%;max-width:64rem;margin-inline:auto;padding:3rem 1.5rem}
+    .site-nav .container{padding-block:0}
+    .min-h-screen{min-height:100vh}
+    .eyebrow{display:inline-block;margin-bottom:1.25rem;border-radius:9999px;background:var(--primary);color:var(--primary-foreground);padding:.25rem 1rem;font-size:.875rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+    .site-nav{position:sticky;top:0;z-index:50;border-bottom:4px dotted color-mix(in oklab,var(--primary) 30%,transparent);background:color-mix(in oklab,var(--background) 90%,transparent);backdrop-filter:blur(6px)}
+    .site-nav .container{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;padding-block:1rem}
+    .brand{display:flex;align-items:center;gap:.5rem}
+    .brand-mark{display:flex;align-items:center;justify-content:center;width:2.25rem;height:2.25rem;border-radius:.75rem;background:var(--primary)}
+    .brand-mark span{width:1rem;height:1rem;transform:rotate(45deg);border-radius:3px;border:2px solid var(--primary-foreground)}
+    .brand-name{font-family:var(--font-display);font-size:1.25rem;color:var(--primary)}
+    .nav-links{display:flex;align-items:center;gap:.25rem;font-size:.875rem;font-weight:700;color:var(--secondary-foreground)}
+    .nav-links a{border-radius:9999px;padding:.375rem .75rem;transition:background-color .15s ease}
+    .nav-links a:hover,.nav-links a[aria-current="page"]{background:var(--muted)}
+    .nav-cta{border-radius:9999px;background:var(--accent);color:var(--accent-foreground)!important;padding:.375rem 1rem}
+    .btn{display:inline-block;cursor:pointer;border-radius:1rem;padding:1rem 2.5rem;font-family:var(--font-display);font-size:1.25rem}
+    .btn-accent{background:var(--accent);color:var(--accent-foreground);box-shadow:0 6px 0 0 color-mix(in oklab,var(--accent) 60%,black)}
+    .btn-ghost{background:transparent;color:var(--secondary-foreground);border:3px solid color-mix(in oklab,var(--primary) 45%,transparent);font-size:1.0625rem;padding:.875rem 1.75rem}
+    .hero{margin-bottom:2rem;border-radius:var(--radius-2xl);border:4px dashed color-mix(in oklab,var(--primary) 40%,transparent);background:var(--secondary);padding:2.5rem 1.5rem;text-align:center}
+    .hero h1{margin-bottom:1.5rem;font-size:2.5rem;line-height:1.15;color:var(--primary)}
+    .hero p{margin-inline:auto;margin-bottom:2rem;max-width:42rem;font-size:1.25rem;line-height:1.6;color:var(--secondary-foreground)}
+    .hero-actions{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.875rem;margin-bottom:1.5rem}
+    .hero-reassure{font-size:.9375rem!important;font-weight:600;margin-bottom:0!important;color:var(--muted-foreground)!important}
+    .trust-strip{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;margin:0 0 2.5rem;padding:0}
+    .trust-chip{display:inline-flex;align-items:center;gap:.4rem;border-radius:9999px;border:2px solid var(--border);background:var(--card);padding:.4rem .9rem;font-size:.8125rem;font-weight:700;color:var(--secondary-foreground)}
+    .trust-chip::before{content:"";width:.5rem;height:.5rem;border-radius:9999px;background:var(--quest-3)}
+    @media (max-width:640px){.nav-links .nav-scroll-link{display:none}.nav-links{gap:.5rem}.hero h1{font-size:2rem}.trust-chip{font-size:.75rem;padding:.35rem .7rem}}@media (min-width:768px){body{padding-bottom:0}.hero{padding:3.5rem}.hero h1{font-size:3.75rem}.hero p{font-size:1.375rem}}
+  </style>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- Fonts and the full stylesheet load async (preload → swap to stylesheet
+       on load) so they never block first paint. -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+  <link rel="preload" as="style" href="css/style.css" onload="this.onload=null;this.rel='stylesheet'" />
+  <link rel="preload" as="style" href="css/booking.css" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/booking.css" />
+  </noscript>
+
+  <!-- ═══ ANALYTICS ═══════════════════════════════════════════════════════
+       Paste your Google Analytics 4 tag here when you have one. js/track.js
+       sends a "generate_lead" event to it automatically on booking clicks.
+       ═══════════════════════════════════════════════════════════════════ -->
+
+  <!-- ═══ BUSINESS SCHEMA ═════════════════════════════════════════════════
+       Keep name / email / prices identical to your Google Business Profile
+       and to the visible text on this page. If a price changes, change it in
+       BOTH places. Never add aggregateRating without real reviews.
+       ═══════════════════════════════════════════════════════════════════ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": "https://tabletopteachings.com/#business",
+    "name": "Tabletop Teachings",
+    "description": "In-home tutoring for reading, writing and drama skills for ages 8–18 in Newcastle NSW, taught through Dungeons & Dragons gameplay.",
+    "url": "https://tabletopteachings.com/",
+    "image": "https://tabletopteachings.com/assets/og-image.png",
+    "email": "Tabletopteachings@gmail.com",
+    "priceRange": "$50-$60",
+    "currenciesAccepted": "AUD",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Newcastle",
+      "addressRegion": "NSW",
+      "postalCode": "2300",
+      "addressCountry": "AU"
+    },
+    "areaServed": [
+      { "@type": "City", "name": "Newcastle, NSW" },
+      { "@type": "City", "name": "Lake Macquarie, NSW" },
+      { "@type": "City", "name": "Maitland, NSW" }
+    ],
+    "openingHoursSpecification": [{
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+      "opens": "09:00",
+      "closes": "18:00"
+    }],
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Tutoring sessions",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "name": "Single Session",
+          "description": "A one-hour, one-on-one in-home session with the Game Master. All equipment provided.",
+          "price": "60",
+          "priceCurrency": "AUD"
+        },
+        {
+          "@type": "Offer",
+          "name": "Continuous Adventure",
+          "description": "A weekly one-hour session, billed at $200 per month for four sessions.",
+          "price": "50",
+          "priceCurrency": "AUD"
+        }
+      ]
+    }
+  }
+  </script>
+
+  <!-- ═══ FAQ SCHEMA ══════════════════════════════════════════════════════
+       Every question and answer below must match the visible FAQ text on the
+       page word for word. If you edit one, edit the other.
+       ═══════════════════════════════════════════════════════════════════ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What are your credentials?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "All of our Game Masters hold a valid, current Working With Children Check, First Aid and CPR certification, and experience working with children."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "My child has never played D&D. Will they be lost?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Nope! Our sessions are designed to work regardless of a student's experience, and are tailored to their learning goals."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Where and when do sessions run?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "We bring the learning to you. Sessions run in your own home across Newcastle, Lake Macquarie and Maitland in NSW, and there is no equipment for you to buy or set up."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Isn't this just a games club with a label on it?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Every campaign starts with a written list of reading, writing and social objectives for that student. Objectives are ticked off only when a player actually demonstrates them at the table, and you get a record of your own child's progress."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What ages do you teach?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Ages 8 to 18."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I have to commit to a whole term?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Nope! You can book a single session first and expand to a full term at any time."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is D&D too dark or scary for young kids?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Nope! Our stories are designed specifically for the age groups that engage with them. Our Game Masters are always ready to talk to parents and students to keep the story and the learning within expectations."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does the group waitlist work?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Group campaigns start once enough local players of a similar age are ready, so we keep a waitlist rather than a calendar. Add your details and we will email you as soon as a table is forming near you. One-on-one sessions do not use the waitlist and can be booked straight away."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can you run sessions for our school or service?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. We offer on-site sessions for schools, libraries, OOSH programs and support services, mapped to your literacy goals with written reporting on request. Use the form on this page and mention your organisation."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <div class="min-h-screen">
+    <nav class="site-nav">
+      <div class="container" style="padding-block: 1rem;">
+        <a href="#top" class="brand">
+          <span class="brand-mark" aria-hidden="true"><span></span></span>
+          <span class="brand-name">Tabletop Teachings</span>
+        </a>
+        <div class="nav-links">
+          <a href="#how-it-works" class="nav-scroll-link">How It Works</a>
+          <a href="#live-quests">Adventures</a>
+          <a href="#pricing" class="nav-scroll-link">Pricing</a>
+          <a href="#contact" class="nav-cta" data-track-cta="nav">Join an Adventure</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <header id="top" class="hero">
+        <!-- The H1 now carries the words a parent actually types into Google
+             ("tutoring", "Newcastle") while keeping the original tagline. -->
+        <span class="eyebrow">Newcastle NSW &middot; Ages 8&ndash;18</span>
+        <h1>In-home tutoring that takes learning on an adventure</h1>
+        <p>Tabletop Teachings brings adventure to your door, anywhere across Newcastle, Lake Macquarie and Maitland. In-person, at-home tutoring for reading, writing and drama skills, taught with a fun-first philosophy. A segment of every session is Dungeons &amp; Dragons gameplay, designed to activate your student's passion for learning.</p>
+        <div class="hero-actions">
+          <a href="#contact" class="btn btn-accent" data-track-cta="hero">Join an Adventure</a>
+          <a href="#how-it-works" class="btn btn-ghost">See how a session runs</a>
+        </div>
+        <p class="hero-reassure">Takes two minutes. We reply within 24 hours.</p>
+      </header>
+
+      <main id="main">
+        <!-- ═══ How a session runs ═══════════════════════════════════════ -->
+        <section id="how-it-works" class="section">
+          <h2 class="section-title">What actually happens in a session</h2>
+          <p class="section-sub">A one-hour session in your own home. The learning goals are threaded through the story, not bolted on at the end.</p>
+          <div class="session-layout">
+            <ol class="runsheet">
+              <!-- TODO: the first step of your session was an empty list item
+                   on the live site, which rendered as a blank "1." Add the
+                   real opening step here (a recap? character setup?) or leave
+                   this comment in place — an empty <li> looked like a bug. -->
+              <li>
+                <h3>Play</h3>
+                <p>Create a character and pilot them through adventures, conversations and puzzles.</p>
+              </li>
+              <li>
+                <h3>Discuss</h3>
+                <p>Link gameplay to the student's personalised learning goals, helping them become a more confident speaker, increasing reading proficiency, or building their own worlds.</p>
+              </li>
+              <li>
+                <h3>Create</h3>
+                <p>Writing letters to other characters, learning the literary techniques behind the story, and using every skill they've picked up to create their own worlds and adventures.</p>
+              </li>
+              <li>
+                <span class="runsheet-time">After</span>
+                <h3>You get the update</h3>
+                <p>Personalised learning outcomes tracking your student's progression.</p>
+              </li>
+            </ol>
+
+            <aside class="runsheet-aside">
+              <h3>What's included</h3>
+              <ul>
+                <li>Dice, character sheets, miniatures and rulebooks</li>
+                <li>A campaign written for your child, not pulled off a shelf</li>
+                <li>Take-home reading passages, journals and writing prompts</li>
+                <li>A personalised learning record shared with you as the story unfolds</li>
+                <li>A passionate Game Master with experience and a current Working With Children Check</li>
+              </ul>
+            </aside>
+          </div>
+        </section>
+
+        <!-- ═══ Live adventures — cards expand in place ══════════════════ -->
+        <section id="live-quests" class="section">
+          <h2 class="section-title">Adventures In Progress</h2>
+          <p class="section-sub">Real campaigns, running right now. Tap a quest to see its world, its characters and the skills the party is working on.</p>
+          <!-- This grid is filled by js/quests.js, which means search engines
+               see an empty box. The paragraph below is plain HTML so there is
+               at least some crawlable text describing the campaigns. Edit it
+               to match whatever is actually running. -->
+          <p class="section-sub">Campaigns currently running with Newcastle students range from lantern-lighting mysteries for younger readers through to longer political intrigue arcs for high schoolers, each mapped to that student's own reading, writing and speaking goals.</p>
+          <div id="home-quests-grid" class="campaign-switcher"></div>
+          <p class="section-cta-wrap">
+            <a href="#contact" class="section-cta" data-track-cta="quests-section">Join an Adventure &rarr;</a>
+          </p>
+        </section>
+
+        <!-- ═══ Pricing ══════════════════════════════════════════════════
+             NOTE: the radio input below is left over from a Solo / Group
+             toggle that no longer has any labels to click. It currently does
+             no harm, but see the notes accompanying this file before you
+             delete it — style.css may still key off it.
+        ══════════════════════════════════════════════════════════════════ -->
+        <section id="pricing" class="section">
+          <h2 class="section-title">What It Costs</h2>
+          <p class="section-sub">No joining fee or equipment to buy. Single sessions refunded with 24 hours' notice.</p>
+          <input type="radio" name="pricing-mode" id="mode-solo" class="pricing-radio" />
+          <div class="pricing-toggle" role="radiogroup" aria-label="Session type">
+          </div>
+          <div class="pricing-grid">
+            <article class="price-card is-featured">
+              <span class="price-flag">Great starting point</span>
+              <h3>Single Session</h3>
+              <p class="price-desc for-solo">Try a one-on-one session before committing to a campaign.</p>
+              <p class="price-amount for-solo">$60 <span class="price-unit">per session</span></p>
+              <p class="price-note for-solo">1 hour &middot; one-on-one with the DM</p>
+              <ul class="price-list">
+                <li>All equipment provided</li>
+                <li>Take-home resource</li>
+                <li class="for-solo">Pace set entirely by your child</li>
+              </ul>
+              <a href="#contact" class="btn btn-accent btn-block" data-track-cta="pricing-single">Join an Adventure</a>
+            </article>
+            <article class="price-card">
+              <h3>Continuous Adventure</h3>
+              <p class="price-desc for-solo">A session every week, where the fun continues and the learning compounds.</p>
+              <p class="price-amount for-solo">$50 <span class="price-unit">per session</span></p>
+              <p class="price-note for-solo">$200 per month &middot; 4 sessions &middot; 1hr each</p>
+              <ul class="price-list">
+                <li class="for-solo">Learning and gameplay adapt to the student's needs</li>
+                <li>Personalised learning record</li>
+                <li>Weekly take-home materials</li>
+                <li>Progress updates for parents</li>
+              </ul>
+              <a href="#contact" class="btn btn-accent btn-block" data-track-cta="pricing-term">Join an Adventure</a>
+            </article>
+            <article class="price-card">
+              <h3>Group Waitlist</h3>
+              <!-- The waitlist is for group campaigns only. One-on-one has a
+                   calendar, so it never needs a queue. -->
+              <p class="price-desc">Group campaigns start once enough local players are ready. Add your name and we'll email you the moment a table forms near you.</p>
+              <ul class="price-list">
+                <li>Be first in line</li>
+                <li>Have direct impact on the story creation</li>
+                <li>Takes under a minute &middot; no obligation</li>
+              </ul>
+              <a href="#waitlist" class="btn btn-blue" data-track-cta="pricing-waitlist">Join the Waitlist</a>
+            </article>
+          </div>
+          <p class="pricing-footnote">Sibling and concession rates are available.</p>
+        </section>
+
+        <!--
+          ═══ TESTIMONIALS ══════════════════════════════════════════════════
+          This is the single highest-value thing you can add to this page.
+          Ask two or three current families for a sentence, get their written
+          OK, then delete these comment markers and fill in the blanks.
+          Use first name + child's year level only (e.g. "Sarah, parent of a
+          Year 4 player"). Never use a child's full name.
+
+        <section id="reviews" class="section">
+          <h2 class="section-title">What Families Say</h2>
+          <div class="audience-grid">
+            <article class="audience-card tone-quest-4">
+              <span class="audience-quote">&ldquo;[Quote from a parent.]&rdquo;</span>
+              <p>&mdash; [First name], parent of a [Year X] player</p>
+            </article>
+            <article class="audience-card tone-quest-2">
+              <span class="audience-quote">&ldquo;[Quote from a parent.]&rdquo;</span>
+              <p>&mdash; [First name], parent of a [Year X] player</p>
+            </article>
+          </div>
+        </section>
+          ═══════════════════════════════════════════════════════════════════
+        -->
+
+        <!-- ═══ FAQ ══════════════════════════════════════════════════════
+             If you edit any answer here, edit the matching answer in the
+             FAQPage schema block in <head> so the two never disagree.
+        ══════════════════════════════════════════════════════════════════ -->
+        <section id="faq" class="section">
+          <h2 class="section-title">Frequently Asked Questions</h2>
+          <div class="faq-list">
+            <details class="faq-item">
+              <summary>What are your credentials?</summary>
+              <p>All of our Game Masters hold a valid, current Working With Children Check, First Aid and CPR certification, and experience working with children.</p>
+            </details>
+            <details class="faq-item">
+              <summary>My child has never played D&amp;D. Will they be lost?</summary>
+              <p>Nope! Our sessions are designed to work regardless of a student's experience, and are tailored to their learning goals.</p>
+            </details>
+            <details class="faq-item">
+              <summary>Where and when do sessions run?</summary>
+              <p>We bring the learning to you. Sessions run in your own home across Newcastle, Lake Macquarie and Maitland in NSW, and there is no equipment for you to buy or set up.</p>
+            </details>
+            <details class="faq-item">
+              <summary>Isn't this just a games club with a label on it?</summary>
+              <p>Every campaign starts with a written list of reading, writing and social objectives for that student. Objectives are ticked off only when a player actually demonstrates them at the table, and you get a record of your own child's progress.</p>
+            </details>
+            <details class="faq-item">
+              <summary>What ages do you teach?</summary>
+              <p>Ages 8 to 18.</p>
+            </details>
+            <details class="faq-item">
+              <summary>Do I have to commit to a whole term?</summary>
+              <p>Nope! You can book a single session first and expand to a full term at any time.</p>
+            </details>
+            <details class="faq-item">
+              <summary>Is D&amp;D too dark or scary for young kids?</summary>
+              <p>Nope! Our stories are designed specifically for the age groups that engage with them. Our Game Masters are always ready to talk to parents and students to keep the story and the learning within expectations.</p>
+            </details>
+            <details class="faq-item">
+              <summary>How does the group waitlist work?</summary>
+              <p>Group campaigns start once enough local players of a similar age are ready, so we keep a waitlist rather than a calendar. Add your details and we will email you as soon as a table is forming near you. One-on-one sessions do not use the waitlist and can be booked straight away.</p>
+            </details>
+            <details class="faq-item">
+              <summary>Can you run sessions for our school or service?</summary>
+              <p>Yes. We offer on-site sessions for schools, libraries, OOSH programs and support services, mapped to your literacy goals with written reporting on request. Use the form on this page and mention your organisation.</p>
+            </details>
+          </div>
+        </section>
+
+        <!-- ═══ Booking ══════════════════════════════════════════════════
+             The only booking path on the site. The times come from
+             js/booking.js — open that file and edit the block at the top to
+             change your teaching week, block a booked slot, or add a holiday.
+
+             TWO SEPARATE PATHS, one form:
+               .panel-book      the three-step session booking
+               .panel-waitlist  one short screen, group campaigns only
+             They share no field and no state. Keep the mode radios directly
+             inside <form> and directly before both panels: the CSS tab
+             switching relies on the panels being siblings of the radios.
+
+             Required fields are marked data-required, NOT required. Both
+             panels live in one <form> and the hidden one is display:none —
+             a native required field in there would block the submit with a
+             bubble the browser can't point at. js/booking.js does the
+             checking instead.
+        ══════════════════════════════════════════════════════════════════ -->
+        <section id="contact" class="section booking-section" style="margin-bottom: 0;">
+          <div class="booking-shell">
+            <h2 class="section-title">Ready to begin your adventure?</h2>
+            <p class="section-sub">Pick a time, tell us about your adventurer, and we'll reply within a day. It takes about two minutes, and nothing is charged now.</p>
+
+            <!-- Shown after a successful submit; Netlify returns here with ?done=1 -->
+            <div id="done" class="done-card" hidden tabindex="-1">
+              <span class="done-tick" aria-hidden="true">&#10003;</span>
+              <h3>That's come through</h3>
+              <p>We'll email you within a day to confirm the time and answer anything you're wondering about.</p>
+              <p class="done-next">Nothing to bring and nothing to buy &mdash; the dice, character sheets and rulebooks all arrive with your Game Master.</p>
+            </div>
+
+            <form id="booking-form" name="booking" method="POST" action="?done=1#contact"
+                  data-netlify="true" data-netlify-honeypot="bot-field">
+              <input type="hidden" name="form-name" value="booking" />
+              <!-- Spam trap, parked off-screen by .hp-field. A person never
+                   sees it; a bot fills it in and Netlify bins the submission. -->
+              <p class="hp-field" aria-hidden="true"><label>Leave this empty: <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
+
+              <!-- ─── Tabs ─────────────────────────────────────────────── -->
+              <input type="radio" name="mode" id="mode-book" value="Booking a session" class="mode-radio" checked />
+              <input type="radio" name="mode" id="mode-waitlist" value="Group waitlist" class="mode-radio" />
+              <div class="mode-toggle" id="waitlist" role="radiogroup" aria-label="What would you like to do?">
+                <label for="mode-book">Book a session</label>
+                <label for="mode-waitlist">Group waitlist</label>
+              </div>
+
+              <!-- ═══════════════════════════════════════════════════════
+                   PATH 1 — Book a session (three steps)
+              ═══════════════════════════════════════════════════════════ -->
+              <div class="panel-book">
+
+                <!-- Revealed by js/booking.js. Without it, every step below is
+                     simply visible at once: a longer form, but a working one. -->
+                <ol class="bk-steps" id="steps" hidden>
+                  <li data-step-dot data-state="current">Time</li>
+                  <li data-step-dot data-state="todo">Details</li>
+                  <li data-step-dot data-state="todo">Check &amp; send</li>
+                </ol>
+
+                <!-- ─── Step 1 ─────────────────────────────────────────── -->
+                <section class="bk-step" data-step="1" aria-label="Step 1 of 3">
+                  <h3 class="booking-h" data-step-heading tabindex="-1">Pick a time</h3>
+                  <p class="block-sub">All times are Newcastle time, and every session runs for one hour in your own home. Choose a day, then a time.</p>
+
+                  <div id="session-field" class="field">
+                    <div id="slots" aria-busy="true" aria-live="polite">
+                      <p class="slots-loading">Finding free times&hellip;</p>
+                    </div>
+                    <p id="slots-empty" class="slots-empty" hidden></p>
+                  </div>
+
+                  <input type="hidden" name="session" id="session-value" />
+                  <p id="session-summary" class="session-summary" role="status" hidden></p>
+
+                  <p class="mode-nudge">Looking for a group campaign instead? <label for="mode-waitlist" class="mode-link">Join the group waitlist</label> and we'll tell you the moment a table forms.</p>
+
+                  <div class="step-nav">
+                    <button type="button" class="btn btn-accent step-next" data-next>Next: your details</button>
+                  </div>
+                </section>
+
+                <!-- ─── Step 2 ─────────────────────────────────────────── -->
+                <section class="bk-step" data-step="2" aria-label="Step 2 of 3">
+                  <h3 class="booking-h" data-step-heading tabindex="-1">Your details</h3>
+
+                  <div class="field-row">
+                    <div class="field">
+                      <label for="parent-name">Your name</label>
+                      <input id="parent-name" name="parent-name" type="text" autocomplete="name" data-required="true"
+                        data-error="Add your name so we know who we're replying to." />
+                    </div>
+                    <div class="field">
+                      <label for="parent-email">Email</label>
+                      <input id="parent-email" name="parent-email" type="email" autocomplete="email"
+                        inputmode="email" data-required="true"
+                        data-error="Add an email address &mdash; it's how we confirm."
+                        data-error-format="That email looks incomplete. Check for a typo." />
+                    </div>
+                  </div>
+
+                  <div class="field">
+                    <label for="parent-phone">Mobile <span class="optional">optional</span></label>
+                    <input id="parent-phone" name="parent-phone" type="tel" autocomplete="tel" inputmode="tel"
+                      data-error-format="That number looks too short." />
+                    <p class="field-hint">Only used to text you a reminder before the session.</p>
+                  </div>
+
+                  <!-- The booking path asks for the whole address because a
+                       Game Master has to drive to the door. The waitlist path
+                       further down deliberately still asks for suburb only:
+                       nobody visits a house off the waitlist, and the suburb
+                       is all that's needed to group nearby players. -->
+                  <div class="field">
+                    <label for="street-address">Street address</label>
+                    <input id="street-address" name="street-address" type="text"
+                      autocomplete="address-line1" data-required="true"
+                      placeholder="e.g. 12 Ocean Street, or Unit 3/12 Ocean Street"
+                      data-error="Add the street address so your Game Master can find you." />
+                    <p class="field-hint">This is where the session runs, so it's the address we'll drive to.</p>
+                  </div>
+
+                  <div class="field-row">
+                    <div class="field">
+                      <label for="suburb">Suburb</label>
+                      <input id="suburb" name="suburb" type="text" autocomplete="address-level2" data-required="true"
+                        placeholder="e.g. Merewether"
+                        data-error="Add your suburb so we can check we cover it." />
+                      <p class="field-hint">We travel across Newcastle, Lake Macquarie and Maitland.</p>
+                    </div>
+                    <div class="field">
+                      <label for="postcode">Postcode</label>
+                      <input id="postcode" name="postcode" type="text" autocomplete="postal-code"
+                        inputmode="numeric" maxlength="4" data-required="true"
+                        placeholder="e.g. 2291"
+                        data-pattern="^[0-9]{4}$"
+                        data-error="Add your postcode."
+                        data-error-format="An Australian postcode is four digits." />
+                      <p class="field-hint">NSW only &mdash; we don't travel outside the Hunter.</p>
+                    </div>
+                  </div>
+
+                  <div class="field-row">
+                    <div class="field">
+                      <label for="student-first-name">Their first name</label>
+                      <input id="student-first-name" name="student-first-name" type="text" data-required="true"
+                        data-error="Add their first name." />
+                      <p class="field-hint">First name is plenty.</p>
+                    </div>
+                    <div class="field">
+                      <label for="student-year">Their school year</label>
+                      <select id="student-year" name="student-year" data-required="true"
+                        data-error="Choose their school year.">
+                        <option value="">Choose&hellip;</option>
+                        <option>Year 3</option><option>Year 4</option><option>Year 5</option>
+                        <option>Year 6</option><option>Year 7</option><option>Year 8</option>
+                        <option>Year 9</option><option>Year 10</option><option>Year 11</option>
+                        <option>Year 12</option><option>Not in school</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <!-- Chips instead of a blank box: one tap answers the question
+                       that used to be a required paragraph, and the answers come
+                       back in a form you can actually sort. -->
+                  <fieldset class="radio-set" data-required-group data-error="Pick at least one &mdash; it's how we match the right table.">
+                    <legend>What would you like them to get out of it?</legend>
+                    <div class="chip-wrap">
+                      <label class="radio-chip"><input type="checkbox" name="goal" value="Reading confidence" /><span>Reading confidence</span></label>
+                      <label class="radio-chip"><input type="checkbox" name="goal" value="Writing" /><span>Writing</span></label>
+                      <label class="radio-chip"><input type="checkbox" name="goal" value="Speaking up in a group" /><span>Speaking up in a group</span></label>
+                      <label class="radio-chip"><input type="checkbox" name="goal" value="Making friends" /><span>Making friends</span></label>
+                      <label class="radio-chip"><input type="checkbox" name="goal" value="Handling losing" /><span>Handling losing</span></label>
+                      <label class="radio-chip"><input type="checkbox" name="goal" value="Focus and attention" /><span>Focus and attention</span></label>
+                      <label class="radio-chip"><input type="checkbox" name="goal" value="Something else" /><span>Something else</span></label>
+                    </div>
+                  </fieldset>
+
+                  <div class="field">
+                    <label for="goals">Anything you'd like to add about that? <span class="optional">optional</span></label>
+                    <textarea id="goals" name="goals" rows="3"
+                      placeholder="Whatever matters most to you &mdash; in as much or as little detail as you like."></textarea>
+                  </div>
+
+                  <div class="field">
+                    <label for="notes">Anything else we should know? <span class="optional">optional</span></label>
+                    <textarea id="notes" name="notes" rows="3"
+                      placeholder="Support needs, things that help them focus, topics to steer around &mdash; and anything tricky about finding you, like a gate code or where to park."></textarea>
+                  </div>
+
+                  <div class="step-nav">
+                    <button type="button" class="btn btn-accent step-next" data-next>Next: check it over</button>
+                    <button type="button" class="step-back" data-back>Back</button>
+                  </div>
+                </section>
+
+                <!-- ─── Step 3 ─────────────────────────────────────────── -->
+                <section class="bk-step" data-step="3" aria-label="Step 3 of 3">
+                  <h3 class="booking-h" data-step-heading tabindex="-1">Check and send</h3>
+                  <p class="block-sub">Here's what comes to us. Change anything you like before sending.</p>
+
+                  <div id="review" class="review-card"></div>
+
+                  <div class="check-field">
+                    <label class="check-row">
+                      <input type="checkbox" name="consent" value="yes" data-required="true"
+                        data-error="Tick the box so we know you're the parent or carer." />
+                      <span>I'm this child's parent or carer and I'm happy to be contacted about this.</span>
+                    </label>
+                  </div>
+
+                  <p class="privacy-note">
+                    We keep these answers to run your child's sessions and nothing else &mdash;
+                    never sold, never shared. Your address is used only to get your Game Master
+                    to the door. Ask any time and we'll delete the lot.
+                  </p>
+
+                  <button type="submit" class="btn btn-accent btn-block" data-track-cta="booking-submit">
+                    Request this session
+                  </button>
+                  <p class="pay-note">We'll confirm by email and sort out payment before the first session.</p>
+
+                  <div class="step-nav">
+                    <button type="button" class="step-back" data-back>Back</button>
+                  </div>
+                </section>
+              </div>
+
+              <!-- ═══════════════════════════════════════════════════════
+                   PATH 2 — Group waitlist (one screen)
+                   Deliberately short. No time picker, no step dots, no
+                   review screen. Group campaigns are the only thing the
+                   waitlist covers, so there is nothing to choose between.
+              ═══════════════════════════════════════════════════════════ -->
+              <section class="panel-waitlist bk-waitlist" aria-label="Join the group waitlist">
+                <h3 class="booking-h" id="waitlist-heading" data-step-heading tabindex="-1">Join the group waitlist</h3>
+                <p class="block-sub">Group campaigns start once enough local players of a similar age are ready. Leave your details and we'll email you the moment a table forms near you. Under a minute, no obligation, and you can leave the list any time.</p>
+
+                <!-- Fixed value: the waitlist is group campaigns only, so this
+                     arrives in your inbox without anyone having to pick it. -->
+                <input type="hidden" name="waitlist-for" value="Group campaign" />
+
+                <div class="field-row">
+                  <div class="field">
+                    <label for="wl-parent-name">Your name</label>
+                    <input id="wl-parent-name" name="parent-name" type="text" autocomplete="name" data-required="true"
+                      data-error="Add your name so we know who we're replying to." />
+                  </div>
+                  <div class="field">
+                    <label for="wl-parent-email">Email</label>
+                    <input id="wl-parent-email" name="parent-email" type="email" autocomplete="email"
+                      inputmode="email" data-required="true"
+                      data-error="Add an email address &mdash; it's how we'll reach you."
+                      data-error-format="That email looks incomplete. Check for a typo." />
+                  </div>
+                </div>
+
+                <div class="field-row">
+                  <div class="field">
+                    <label for="wl-student-first-name">Their first name</label>
+                    <input id="wl-student-first-name" name="student-first-name" type="text" data-required="true"
+                      data-error="Add their first name." />
+                    <p class="field-hint">First name is plenty.</p>
+                  </div>
+                  <div class="field">
+                    <label for="wl-student-year">Their school year</label>
+                    <select id="wl-student-year" name="student-year" data-required="true"
+                      data-error="Choose their school year.">
+                      <option value="">Choose&hellip;</option>
+                      <option>Year 3</option><option>Year 4</option><option>Year 5</option>
+                      <option>Year 6</option><option>Year 7</option><option>Year 8</option>
+                      <option>Year 9</option><option>Year 10</option><option>Year 11</option>
+                      <option>Year 12</option><option>Not in school</option>
+                    </select>
+                    <p class="field-hint">So we can group them with players their own age.</p>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label for="wl-suburb">Your suburb</label>
+                  <input id="wl-suburb" name="suburb" type="text" autocomplete="address-level2" data-required="true"
+                    placeholder="e.g. Merewether"
+                    data-error="Add your suburb so we can match you to a nearby table." />
+                  <p class="field-hint">We travel across Newcastle, Lake Macquarie and Maitland.</p>
+                </div>
+
+                <div class="field">
+                  <label for="wl-notes">Anything you'd like to add? <span class="optional">optional</span></label>
+                  <textarea id="wl-notes" name="notes" rows="2"
+                    placeholder="Days that suit, support needs, a friend you'd like them seated with."></textarea>
+                </div>
+
+                <div class="check-field">
+                  <label class="check-row">
+                    <input type="checkbox" name="consent" value="yes" data-required="true"
+                      data-error="Tick the box so we know you're the parent or carer." />
+                    <span>I'm this child's parent or carer and I'm happy to be contacted about this.</span>
+                  </label>
+                </div>
+
+                <button type="submit" class="btn btn-accent btn-block wl-submit" data-track-cta="waitlist-submit">
+                  Join the waitlist
+                </button>
+
+                <p class="privacy-note">
+                  We keep these answers to run your child's sessions and nothing else &mdash;
+                  never sold, never shared. Ask any time and we'll delete them.
+                </p>
+
+                <p class="wl-alt">Don't want to wait? One-on-one sessions have times open now &mdash;
+                  <label for="mode-book" class="mode-link">pick a time instead</label>.</p>
+              </section>
+
+              <noscript>
+                <p class="slots-empty" style="margin-top:1rem">The time picker needs JavaScript.
+                  Fill in the rest and we'll email you the next free times, or write to us at
+                  <a href="mailto:Tabletopteachings@gmail.com">Tabletopteachings@gmail.com</a>.</p>
+              </noscript>
+            </form>
+
+            <p class="booking-alt">Prefer email? <a href="mailto:Tabletopteachings@gmail.com">Tabletopteachings@gmail.com</a></p>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <p class="footer-links">
+          <a href="#how-it-works">How It Works</a>
+          <a href="#live-quests">Adventures</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#faq">FAQ</a>
+        </p>
+        <!-- Name, area and contact in plain text. Google cross-checks this
+             against your Google Business Profile, so keep them identical. -->
+        <p>Tabletop Teachings &mdash; in-home D&amp;D tutoring for ages 8&ndash;18 in Newcastle, Lake Macquarie and Maitland, NSW.</p>
+        <p class="footer-meta">&copy; <span id="year"></span> Tabletop Teachings &nbsp;&middot;&nbsp; <a href="mailto:Tabletopteachings@gmail.com">Tabletopteachings@gmail.com</a></p>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Sticky CTA for phones, where most ad traffic lands. -->
+  <div class="mobile-cta">
+    <p>Spots open now in Newcastle</p>
+    <a href="#contact" class="btn btn-accent" data-track-cta="mobile-sticky">Join an Adventure</a>
+  </div>
+
+  <script>
+    // Guarded: the previous version threw a TypeError here because the
+    // footer no longer contained <span id="year">.
+    var yearEl = document.getElementById("year");
+    if (yearEl) { yearEl.textContent = new Date().getFullYear(); }
+  </script>
+  <script src="js/adventures-data.js"></script>
+  <script src="js/quests.js"></script>
+  <script src="js/track.js"></script>
+  <!-- Builds the time picker and runs the three-step form. Edit the block at
+       the top of this file to change your teaching week. -->
+  <script src="js/booking.js" defer></script>
+</body>
+</html>
