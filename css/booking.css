@@ -116,19 +116,11 @@
   outline-offset: 3px;
 }
 
-/* One panel at a time. The booking steps and the waitlist are each wrapped in
-   one panel that sits directly beside the radios, so the plain `~` pairs do
-   the work; the `~ *` pairs stay for any panel nested deeper. */
-#mode-book:checked ~ .panel-waitlist,
-#mode-waitlist:checked ~ .panel-book,
+/* One panel at a time. `~ * .panel-x` reaches inside the step sections. */
 #mode-book:checked ~ * .panel-waitlist,
 #mode-waitlist:checked ~ * .panel-book { display: none; }
 #mode-book:checked ~ * .label-waitlist,
 #mode-waitlist:checked ~ * .label-book { display: none; }
-
-/* The three dots belong to the booking flow. The waitlist is one screen and
-   must never look like the front of a queue of steps. */
-#mode-waitlist:checked ~ .bk-steps { display: none; }
 
 /* An inline "switch tabs" link. It's a <label>, so it needs no JavaScript. */
 .mode-link {
@@ -140,23 +132,6 @@
 }
 .mode-nudge {
   margin-top: 1.25rem;
-  font-size: 0.875rem;
-  line-height: 1.6;
-  color: var(--muted-foreground);
-}
-
-/* ---- 2b. Waitlist panel -------------------------------------------------- */
-/* One screen, no steps, no time picker. Everything here is deliberately
-   plainer than the booking flow: the whole point is that it's over quickly. */
-.bk-waitlist { margin: 0; }
-.bk-waitlist .booking-h { margin-bottom: 0.35rem; }
-.bk-waitlist .wl-submit { margin-top: 0.5rem; }
-
-/* A quiet line reminding people that one-on-one sessions don't need a queue. */
-.wl-alt {
-  margin-top: 1.5rem;
-  padding-top: 1.15rem;
-  border-top: 2px dotted var(--border);
   font-size: 0.875rem;
   line-height: 1.6;
   color: var(--muted-foreground);
@@ -588,8 +563,4 @@
 @media print {
   .mode-toggle, .bk-steps, .step-nav, .more-dates { display: none !important; }
   .bk-step { display: block !important; }
-  /* On paper there are no tabs, so show both paths rather than whichever one
-     happened to be open. */
-  #mode-book:checked ~ .panel-waitlist,
-  #mode-waitlist:checked ~ .panel-book { display: block !important; }
 }
