@@ -34,6 +34,6 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     X-Frame-Options = "SAMEORIGIN"
 
-# Note: no redirect rule needed for /adventures — Netlify's built-in
-# pretty-URL handling already serves adventures/index.html there
-# automatically. Adding an explicit redirect for it caused a redirect loop.
+# The site is a single page. There is no /adventures/ directory any more —
+# the Adventures section is rendered into the homepage by js/quests.js, and
+# /#lantern-marsh style links open a specific quest there.
