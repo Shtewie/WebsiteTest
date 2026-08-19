@@ -25,11 +25,11 @@ window.TT_SCHEDULE = {
   // The START time of each session you're willing to run on that weekday.
   // These repeat every week until you change them.
   week: {
-    mon: ["16:00", "17:30"],
+    mon: ["", ""],
     tue: ["16:00", "17:30"],
     wed: ["16:00", "17:30"],
     thu: ["16:00", "17:30"],
-    fri: [],
+    fri: ["16:00"],
     sat: ["09:00", "10:30", "13:00"],
     sun: [],
   },
