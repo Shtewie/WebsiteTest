@@ -81,8 +81,9 @@
   </noscript>
 
   <!-- ═══ ANALYTICS ═══════════════════════════════════════════════════════
-       Paste your Google Analytics 4 tag here when you have one. js/track.js
-       sends a "generate_lead" event to it automatically on booking clicks.
+       Paste your Google Analytics 4 tag here when you have one.
+       js/track.js reports CTA clicks as "cta_click"; js/schedule.js sends
+       the single "generate_lead" conversion once a booking is submitted.
        ═══════════════════════════════════════════════════════════════════ -->
 
   <!-- ═══ BUSINESS SCHEMA ═════════════════════════════════════════════════
@@ -260,10 +261,6 @@
           <p class="section-sub">A one-hour session in your own home. The learning goals are threaded through the story, not bolted on at the end.</p>
           <div class="session-layout">
             <ol class="runsheet">
-              <!-- TODO: the first step of your session was an empty list item
-                   on the live site, which rendered as a blank "1." Add the
-                   real opening step here (a recap? character setup?) or leave
-                   this comment in place — an empty <li> looked like a bug. -->
               <li>
                 <h3>Play</h3>
                 <p>Create a character and pilot them through adventures, conversations and puzzles.</p>
@@ -312,38 +309,33 @@
         </section>
 
         <!-- ═══ Pricing ══════════════════════════════════════════════════
-             NOTE: the radio input below is left over from a Solo / Group
-             toggle that no longer has any labels to click. It currently does
-             no harm, but see the notes accompanying this file before you
-             delete it — style.css may still key off it.
+             There is one set of prices now. The Solo / Group switch that
+             used to sit here is gone, along with its CSS.
         ══════════════════════════════════════════════════════════════════ -->
         <section id="pricing" class="section">
           <h2 class="section-title">What It Costs</h2>
           <p class="section-sub">No joining fee or equipment to buy. Single sessions refunded with 24 hours' notice.</p>
-          <input type="radio" name="pricing-mode" id="mode-solo" class="pricing-radio" />
-          <div class="pricing-toggle" role="radiogroup" aria-label="Session type">
-          </div>
           <div class="pricing-grid">
             <article class="price-card is-featured">
               <span class="price-flag">Great starting point</span>
               <h3>Single Session</h3>
-              <p class="price-desc for-solo">Try a one-on-one session before committing to a campaign.</p>
-              <p class="price-amount for-solo">$60 <span class="price-unit">per session</span></p>
-              <p class="price-note for-solo">1 hour &middot; one-on-one with the DM</p>
+              <p class="price-desc">Try a one-on-one session before committing to a campaign.</p>
+              <p class="price-amount">$60 <span class="price-unit">per session</span></p>
+              <p class="price-note">1 hour &middot; one-on-one with the DM</p>
               <ul class="price-list">
                 <li>All equipment provided</li>
                 <li>Take-home resource</li>
-                <li class="for-solo">Pace set entirely by your child</li>
+                <li>Pace set entirely by your child</li>
               </ul>
               <a href="#contact" class="btn btn-accent btn-block" data-track-cta="pricing-single">Join an Adventure</a>
             </article>
             <article class="price-card">
               <h3>Continuous Adventure</h3>
-              <p class="price-desc for-solo">A session every week, where the fun continues and the learning compounds.</p>
-              <p class="price-amount for-solo">$50 <span class="price-unit">per session</span></p>
-              <p class="price-note for-solo">$200 per month &middot; 4 sessions &middot; 1hr each</p>
+              <p class="price-desc">A session every week, where the fun continues and the learning compounds.</p>
+              <p class="price-amount">$50 <span class="price-unit">per session</span></p>
+              <p class="price-note">$200 per month &middot; 4 sessions &middot; 1hr each</p>
               <ul class="price-list">
-                <li class="for-solo">Learning and gameplay adapt to the student's needs</li>
+                <li>Learning and gameplay adapt to the student's needs</li>
                 <li>Personalised learning record</li>
                 <li>Weekly take-home materials</li>
                 <li>Progress updates for parents</li>
@@ -430,8 +422,8 @@
         </section>
         <!-- ═══ Booking ══════════════════════════════════════════════════
              The only booking path on the site. The times come from
-             js/booking.js — open that file and edit the block at the top to
-             change your teaching week, block a booked slot, or add a holiday.
+             js/availability.js — open that file to change your teaching
+             week, block a booked slot, or add a holiday.
 
              The two tabs switch in pure CSS, so the form still works if the
              script fails. Keep the radios directly inside <form>: the tab
@@ -465,7 +457,7 @@
                 <label for="mode-waitlist">Join the waitlist</label>
               </div>
 
-              <!-- Revealed by js/booking.js. Without it, every step below is
+              <!-- Revealed by js/schedule.js. Without it, every step below is
                    simply visible at once: a longer form, but a working one. -->
               <ol class="bk-steps" id="steps" hidden>
                 <li data-step-dot data-state="current"><span class="label-book">Time</span><span class="label-waitlist">What you want</span></li>
@@ -627,7 +619,7 @@
                   never sold, never shared. Ask any time and we'll delete them.
                 </p>
 
-                <button type="submit" class="btn btn-accent btn-block" data-track-cta="booking-submit">
+                <button type="submit" class="btn btn-accent btn-block">
                   <span class="label-book">Request this session</span>
                   <span class="label-waitlist">Join the waitlist</span>
                 </button>
@@ -672,16 +664,19 @@
   </div>
 
   <script>
-    // Guarded: the previous version threw a TypeError here because the
-    // footer no longer contained <span id="year">.
+    // Guarded so the footer year can be removed from the markup without
+    // this throwing a TypeError.
     var yearEl = document.getElementById("year");
     if (yearEl) { yearEl.textContent = new Date().getFullYear(); }
   </script>
   <script src="js/adventures-data.js"></script>
   <script src="js/quests.js"></script>
   <script src="js/track.js"></script>
-  <!-- Builds the time picker and runs the three-step form. Edit the block at
-       the top of this file to change your teaching week. -->
-  <script src="js/schedule.js" defer></script>
+  <!-- Your teaching week, booked slots and holidays. This is the file to
+       edit when your availability changes — it must load before schedule.js,
+       which reads it. -->
+  <script src="js/availability.js"></script>
+  <!-- Builds the time picker and runs the three-step form. -->
+  <script src="js/schedule.js"></script>
 </body>
 </html>
