@@ -74,10 +74,15 @@
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
   <link rel="preload" as="style" href="css/style.css" onload="this.onload=null;this.rel='stylesheet'" />
   <link rel="preload" as="style" href="css/booking.css" onload="this.onload=null;this.rel='stylesheet'" />
+  <!-- The how-it-works section. Kept separate only so it is easy to drop in;
+       paste its contents at the end of css/style.css and delete this line
+       whenever you want to save the extra request. -->
+  <link rel="preload" as="style" href="css/session-log.css" onload="this.onload=null;this.rel='stylesheet'" />
   <noscript>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" />
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/booking.css" />
+    <link rel="stylesheet" href="css/session-log.css" />
   </noscript>
 
   <!-- ═══ ANALYTICS ═══════════════════════════════════════════════════════
@@ -255,39 +260,92 @@
       </header>
 
       <main id="main">
-        <!-- ═══ How a session runs ═══════════════════════════════════════ -->
+        <!-- ═══ How a session runs ═══════════════════════════════════════
+             Styled by css/session-log.css. The icon sprite below must stay
+             inside this section — the <use> references break without it, and
+             it renders nothing on its own.
+        ══════════════════════════════════════════════════════════════════ -->
         <section id="how-it-works" class="section">
-          <h2 class="section-title">What actually happens in a session</h2>
-          <p class="section-sub">A one-hour session in your own home. The learning goals are threaded through the story, not bolted on at the end.</p>
-          <div class="session-layout">
-            <ol class="runsheet">
-              <li>
-                <h3>Play</h3>
-                <p>Create a character and pilot them through adventures, conversations and puzzles.</p>
-              </li>
-              <li>
-                <h3>Discuss</h3>
-                <p>Link gameplay to the student's personalised learning goals, helping them become a more confident speaker, increasing reading proficiency, or building their own worlds.</p>
-              </li>
-              <li>
-                <h3>Create</h3>
-                <p>Writing letters to other characters, learning the literary techniques behind the story, and using every skill they've picked up to create their own worlds and adventures.</p>
-              </li>
-              <li>
-                <span class="runsheet-time">After</span>
-                <h3>You get the update</h3>
-                <p>Personalised learning outcomes tracking your student's progression.</p>
-              </li>
-            </ol>
+          <svg class="tt-sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+            <symbol id="i-log" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 4h11a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6zM6 4v16M9.5 8.5h6M9.5 12.5h4" />
+            </symbol>
+            <symbol id="i-dice" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4" y="4" width="16" height="16" rx="3" />
+              <circle cx="9" cy="9" r="1.1" fill="currentColor" stroke="none" />
+              <circle cx="15" cy="9" r="1.1" fill="currentColor" stroke="none" />
+              <circle cx="9" cy="15" r="1.1" fill="currentColor" stroke="none" />
+              <circle cx="15" cy="15" r="1.1" fill="currentColor" stroke="none" />
+            </symbol>
+            <symbol id="i-map" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 4 3 7v13l6-3 6 3 6-3V4l-6 3zM9 4v13M15 7v13" />
+            </symbol>
+            <symbol id="i-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2zM4 19a2 2 0 0 0 2 2h12" />
+            </symbol>
+            <symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19h16M6.5 15l3.5-4.5 3 3 4.5-5.5" />
+            </symbol>
+            <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3.2 19 6v5c0 4.4-2.9 8.4-7 9.7C7.9 19.4 5 15.4 5 11V6z" />
+              <path d="M9.2 11.8 11 13.6l3.8-3.8" />
+            </symbol>
+            <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12.5 10 17.5 19 7" />
+            </symbol>
+          </svg>
 
-            <aside class="runsheet-aside">
-              <h3>What's included</h3>
-              <ul>
-                <li>Dice, character sheets, miniatures and rulebooks</li>
-                <li>A campaign written for your child, not pulled off a shelf</li>
-                <li>Take-home reading passages, journals and writing prompts</li>
-                <li>A personalised learning record shared with you as the story unfolds</li>
-                <li>A passionate Game Master with experience and a current Working With Children Check</li>
+          <h2 class="section-title">What actually happens in a session</h2>
+          <p class="section-sub">One hour, in your own home. The goals are threaded through the story, not bolted on at the end.</p>
+
+          <div class="session-layout session-layout--log">
+            <div class="session-log">
+              <p class="session-log-head">
+                <svg aria-hidden="true"><use href="#i-log" /></svg>
+                The session log
+              </p>
+
+              <ol class="log-entries">
+                <li>
+                  <span class="log-badge" aria-hidden="true">1</span>
+                  <div>
+                    <h3>Play</h3>
+                    <p>Your child builds a character and steers them through a story full of choices, conversations and problems worth solving.</p>
+                  </div>
+                </li>
+                <li>
+                  <span class="log-badge" aria-hidden="true">2</span>
+                  <div>
+                    <h3>Discuss</h3>
+                    <p>The Game Master pauses at the right moments to tie what just happened back to your child's goals &mdash; reading a passage aloud, speaking up for the party, talking a problem through.</p>
+                  </div>
+                </li>
+                <li>
+                  <span class="log-badge" aria-hidden="true">3</span>
+                  <div>
+                    <h3>Create</h3>
+                    <p>They write letters in character, pick up the techniques behind the story they're in, and start shaping worlds of their own.</p>
+                  </div>
+                </li>
+                <li>
+                  <span class="log-badge log-badge--done" aria-hidden="true"><svg><use href="#i-check" /></svg></span>
+                  <div>
+                    <h3>You get the update</h3>
+                    <p>A short note on what they did at the table and how it maps to the goals you set together.</p>
+                  </div>
+                </li>
+              </ol>
+            </div>
+
+            <aside class="kit-panel">
+              <h3>In the bag</h3>
+              <p class="kit-note">Arrives with your Game Master</p>
+              <ul class="kit-list">
+                <li><svg aria-hidden="true"><use href="#i-dice" /></svg><span>Dice, character sheets, miniatures and rulebooks</span></li>
+                <li><svg aria-hidden="true"><use href="#i-map" /></svg><span>A campaign written for your child, not pulled off a shelf</span></li>
+                <li><svg aria-hidden="true"><use href="#i-book" /></svg><span>Take-home reading passages, journals and writing prompts</span></li>
+                <li><svg aria-hidden="true"><use href="#i-chart" /></svg><span>A learning record that grows as the story does</span></li>
+                <li><svg aria-hidden="true" class="kit-icon--safe"><use href="#i-shield" /></svg><span>A Game Master with a current Working With Children Check</span></li>
               </ul>
             </aside>
           </div>
@@ -301,7 +359,7 @@
                see an empty box. The paragraph below is plain HTML so there is
                at least some crawlable text describing the campaigns. Edit it
                to match whatever is actually running. -->
-          <p class="section-sub">Campaigns currently running with Newcastle students range from lantern-lighting mysteries for younger readers through to longer political intrigue arcs for high schoolers, each mapped to that student's own reading, writing and speaking goals.</p>
+        
           <div id="home-quests-grid" class="campaign-switcher"></div>
           <p class="section-cta-wrap">
             <a href="#contact" class="section-cta" data-track-cta="quests-section">Join an Adventure &rarr;</a>
