@@ -15,7 +15,7 @@
   const gridEl = document.getElementById("home-quests-grid");
   if (!gridEl || typeof ADVENTURES === "undefined") return;
 
-  const TABS = ["World Log", "Characters", "Learning"];
+  const TABS = ["World Log", "Characters";
 
   // Each quest tone always draws the same icon shape.
   const TONE_SHAPE = {
