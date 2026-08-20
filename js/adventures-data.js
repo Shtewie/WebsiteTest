@@ -13,7 +13,7 @@
 //               "3 spots open" or "Full — waitlist open".
 //               Keep it honest; scarcity only works once. It is
 //               printed as-is, so include the number yourself —
-//               "Now recruiting" is the safe wording when you
+//               "" is the safe wording when you
 //               would rather not commit to a count.
 //  - "sessions" free text. If it contains "N of M" (e.g.
 //               "Session 6 of 10") a progress bar is drawn.
@@ -36,7 +36,7 @@ const ADVENTURES = [
     "group": "Ages 8–10 · Party of 4",
     "sessions": "",
     "status": "Ready to Play",
-    "spots": "Full — waitlist open",
+    "spots": "",
     "blurb": "The marsh lanterns have gone out one by one, and the treefolk of Reedhome need heroes small enough to sneak through the reeds and brave enough to ask the right questions.",
     "world": [
       {
@@ -109,7 +109,7 @@ const ADVENTURES = [
     "group": "Ages 13–15",
     "sessions": "",
     "status": "Ready to Play",
-    "spots": "Now recruiting",
+    "spots": "",
     "blurb": "Jubilation fills the air, students fill the halls, and a new dawn rises over the grounds of the Gillview Institute. Headmaster Gill Octavius III, Viscount of Ardenvale and heir to the throne of Fellmore welcomes you with all the poise and elegance that only one with a title that long can carry. Will you study with the wizards, train with the barbarians, sing with the bards, or forge your own path entirely? Gillview is where you find out what kind of adventurer you really are.",
     "world": [
       {
@@ -167,7 +167,7 @@ const ADVENTURES = [
     "group": "Ages 15–18",
     "sessions": "",
     "status": "Ready to play",
-    "spots": "Now recruiting",
+    "spots": "",
     "blurb": "Martin Point a city built on a rift in the fabric of the universe began as a waypoint for weary inter-dimensional travellers has now grown into a metropolis. Its maze of back alleys, shopfronts and towering megaliths of industry rests on the shoulders of a powerless workforce. Now the curious death of Mayvil Aberneth, leader of the workers' movement, has pulled at a thread causing a whole web of deceit, propaganda and manipulation to unravel. What happened to Mayvil Aberneth? Who can you trust? And how will you bring justice to Martin Point?",
     "world": [],
     "characters": [
