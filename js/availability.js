@@ -58,4 +58,13 @@ window.TT_SCHEDULE = {
   minNoticeHours: 24,   // nothing is offered sooner than this from now
   sessionMinutes: 60,   // how long one session runs
   weeksShown: 2,        // weeks visible before the "Show more dates" button
+
+  // How many weekly sessions a Continuous Adventure covers. When someone
+  // picks that option the picker only offers a start time that is ALSO free
+  // at the same time on each of the following weeks — so a slot shown as
+  // available really is available for the whole run.
+  //
+  // This must match the number of sessions in the Continuous Adventure card
+  // on the pricing section of index.html. If you change one, change both.
+  packageSessions: 4,
 };

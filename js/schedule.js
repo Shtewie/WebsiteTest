@@ -11,6 +11,13 @@
 //   Join the waitlist → one short screen, group campaigns only.
 // They never share a field and never share state. Switching between them
 // clears whatever the other one was holding.
+//
+// Inside the booking path there is a second choice — single session, or a
+// Continuous Adventure of several weekly sessions. It changes what the picker
+// offers, not just what gets written on the enquiry: a package start time is
+// only shown when the same weekday and time is free every week of the run, so
+// nobody can book a package that falls apart in week three. The number of
+// sessions in a run is `packageSessions` in js/availability.js.
 // ═══════════════════════════════════════════════════════════════════════════
 
 (function () {
@@ -42,6 +49,11 @@
     ? CFG.minNoticeHours : 24;
   var SESSION_MINUTES = CFG.sessionMinutes || 60;   // length of one session
   var WEEKS_SHOWN = CFG.weeksShown || 2;            // weeks visible before "Show more dates"
+
+  // Sessions in a Continuous Adventure. Below 2 there is no run to check and
+  // the package behaves exactly like a single session, which is the right
+  // thing to do with a nonsense value rather than refusing to draw a picker.
+  var PACKAGE_SESSIONS = Math.max(1, CFG.packageSessions || 4);
 
   // ╔═══════════════════════════════════════════════════════════════════════╗
   // ║  Below here is just the code that turns the above into buttons.       ║
@@ -108,12 +120,47 @@
     return out;
   }
 
-  function build() {
+  // Is this exact weekday-and-time one you teach, and still free? Deliberately
+  // takes a plain date so it can be asked about days beyond the booking
+  // horizon — a package starting in week 6 needs weeks 7, 8 and 9 checked too.
+  function isOffered(y, m, d, dow, time, away, taken) {
+    var date = y + "-" + pad(m) + "-" + pad(d);
+    if (away[date]) return false;
+    if ((WEEK[KEYS[dow]] || []).indexOf(time) === -1) return false;
+    if (taken[date + " " + time]) return false;
+    return true;
+  }
+
+  // The same weekday at weekly intervals, starting on the date given.
+  function everyWeekFrom(y, m, d, count) {
+    var out = [];
+    var cur = new Date(Date.UTC(y, m - 1, d));
+    for (var i = 0; i < count; i++) {
+      out.push({
+        y: cur.getUTCFullYear(),
+        m: cur.getUTCMonth() + 1,
+        d: cur.getUTCDate(),
+        dow: cur.getUTCDay(),
+      });
+      cur.setUTCDate(cur.getUTCDate() + 7);
+    }
+    return out;
+  }
+
+  function shortDate(p) {
+    return p.d + " " + MONTHS[p.m - 1].slice(0, 3) + " " + p.y;
+  }
+
+  // `weekly` true builds start times for a package; false builds single
+  // sessions. Everything downstream reads the slot objects and neither knows
+  // nor cares which it was given.
+  function build(weekly) {
     var out = [];
     var earliest = Date.now() + MIN_NOTICE_HOURS * 3600000;
     var away = awaySet();
     var taken = {};
     TAKEN.forEach(function (t) { taken[String(t).trim()] = true; });
+    var runLength = weekly ? PACKAGE_SESSIONS : 1;
 
     var t = partsOf(Date.now());
     var cur = new Date(Date.UTC(t.y, t.m - 1, t.d));
@@ -133,17 +180,35 @@
           var start = instantOf(y, m, d, +time.slice(0, 2), +time.slice(3, 5));
           var end = start + SESSION_MINUTES * 60000;
           if (start < earliest) return;
+
+          // For a package, every later week has to be free as well. One
+          // clash anywhere in the run and this start time is not offered —
+          // better to show fewer times than to promise a run you can't keep.
+          var run = everyWeekFrom(y, m, d, runLength);
+          var wholeRunFree = run.every(function (p) {
+            return isOffered(p.y, p.m, p.d, p.dow, time, away, taken);
+          });
+          if (!wholeRunFree) return;
+
+          var timeLabel = clock(start) + "\u2013" + clock(end);
+          var firstFull = DAYS[dow] + " " + d + " " + MONTHS[m - 1] + " " + y;
+
           out.push({
             start: start,
             date: date,
             dow: dow,
+            weekly: !!weekly && runLength > 1,
+            runDates: run.map(shortDate),
             shortDay: DAYS[dow].slice(0, 3) + " " + d + " " + MONTHS[m - 1].slice(0, 3),
             longDay: DAYS[dow] + " " + d + " " + MONTHS[m - 1],
-            timeLabel: clock(start) + "\u2013" + clock(end),
+            timeLabel: timeLabel,
             // What actually reaches your inbox — written out in full so there
-            // is no ambiguity about which day it was.
-            value: DAYS[dow] + " " + d + " " + MONTHS[m - 1] + " " + y +
-                   ", " + clock(start) + "\u2013" + clock(end),
+            // is no ambiguity about which day it was. A package lists every
+            // date in the run for the same reason.
+            value: (weekly && runLength > 1)
+              ? DAYS[dow] + "s, " + timeLabel + " \u2014 " + runLength +
+                " weekly sessions: " + run.map(shortDate).join(", ")
+              : firstFull + ", " + timeLabel,
           });
         });
       }
@@ -176,12 +241,21 @@
     return n;
   }
 
+  // Which of the two booking plans is showing. The single session is the
+  // default, so anything unexpected falls back to it.
+  function isWeekly() {
+    var w = document.getElementById("plan-weekly");
+    return !!(w && w.checked) && PACKAGE_SESSIONS > 1;
+  }
+
   function renderSlots() {
     var host = document.getElementById("slots");
     var empty = document.getElementById("slots-empty");
     if (!host) return;
 
-    state.slots = build();
+    var weekly = isWeekly();
+    state.weekly = weekly;
+    state.slots = build(weekly);
     state.byDate = {};
     state.slots.forEach(function (s) {
       (state.byDate[s.date] = state.byDate[s.date] || []).push(s);
@@ -193,11 +267,19 @@
     var dates = Object.keys(state.byDate);
     if (!dates.length) {
       host.hidden = true;
-      empty.innerHTML =
-        "<strong>Nothing free in the next " + WEEKS_AHEAD + " weeks.</strong> " +
-        "The group waitlist is the fastest way in \u2014 " +
-        '<label for="mode-waitlist" class="mode-link">add your name</label> ' +
-        "and we'll email you the moment a table opens up.";
+      // A package can come up empty while single sessions are still wide
+      // open, so point at the cheaper fix first rather than sending someone
+      // to the waitlist who doesn't need to be on it.
+      empty.innerHTML = weekly
+        ? "<strong>No one time is free " + PACKAGE_SESSIONS +
+          " weeks running at the moment.</strong> " +
+          '<label for="plan-single" class="mode-link">Book a single session</label> ' +
+          "instead and we can sort out a regular slot from there, or " +
+          '<label for="mode-waitlist" class="mode-link">join the waitlist</label>.'
+        : "<strong>Nothing free in the next " + WEEKS_AHEAD + " weeks.</strong> " +
+          "The group waitlist is the fastest way in \u2014 " +
+          '<label for="mode-waitlist" class="mode-link">add your name</label> ' +
+          "and we'll email you the moment a table opens up.";
       empty.hidden = false;
       return;
     }
@@ -272,7 +354,9 @@
     panel.innerHTML = "";
     panel.hidden = false;
 
-    var head = el("h4", null, "Times on " + list[0].longDay);
+    var head = el("h4", null, state.weekly
+      ? "Start " + list[0].longDay + ", then the same time each week"
+      : "Times on " + list[0].longDay);
     panel.appendChild(head);
 
     var row = el("div", "time-row");
@@ -312,9 +396,25 @@
       summary.appendChild(el("span", null, "\u2713"));
       var text = el("span");
       text.appendChild(document.createTextNode("You're asking for "));
-      var b = el("b", null, slot.value);
-      text.appendChild(b);
-      text.appendChild(document.createTextNode(". Nothing is charged now \u2014 we'll confirm by email first."));
+
+      if (slot.weekly) {
+        // Every date, not just the first. Someone signing up for a month
+        // should be able to check it against the calendar on the fridge
+        // before they hand over an email address.
+        text.appendChild(el("b", null,
+          DAYS[slot.dow] + "s, " + slot.timeLabel));
+        text.appendChild(document.createTextNode(
+          " \u2014 " + slot.runDates.length + " weekly sessions."));
+        var list = el("span", "run-dates", slot.runDates.join(" \u00b7 "));
+        text.appendChild(list);
+        text.appendChild(document.createTextNode(
+          "Nothing is charged now \u2014 we'll confirm by email first."));
+      } else {
+        text.appendChild(el("b", null, slot.value));
+        text.appendChild(document.createTextNode(
+          ". Nothing is charged now \u2014 we'll confirm by email first."));
+      }
+
       summary.appendChild(text);
       summary.hidden = false;
     } else {
@@ -558,7 +658,9 @@
     if (!host) return;
     var rows = [];
 
-    rows.push(["Session", val("session-value") || "not chosen yet"]);
+    rows.push(["Plan", checkedLabels("plan") || "Single session"]);
+    rows.push([state.weekly ? "Sessions" : "Session",
+      val("session-value") || "not chosen yet"]);
     rows.push(["Adventurer", (val("student-first-name") || "\u2014") + ", " + (val("student-year") || "\u2014")]);
     if (checkedLabels("goal")) rows.push(["Working on", checkedLabels("goal")]);
     rows.push(["You", (val("parent-name") || "\u2014") + " \u00b7 " + (val("parent-email") || "\u2014") +
@@ -675,6 +777,12 @@
     steps = Array.prototype.slice.call(form.querySelectorAll("[data-step]"));
     stepDots = Array.prototype.slice.call(document.querySelectorAll("[data-step-dot]"));
 
+    // Keep the visible label honest about the length of a run without
+    // anyone having to remember to edit the HTML too.
+    Array.prototype.forEach.call(document.querySelectorAll("[data-package-count]"), function (n) {
+      n.textContent = String(PACKAGE_SESSIONS);
+    });
+
     renderSlots();
 
     // From here on the browser's own validation would fight ours, and its
@@ -718,6 +826,21 @@
       r.addEventListener("change", function () {
         syncMode(true);
         track("booking_mode", { mode: r.value });
+      });
+    });
+
+    // Switching plan changes which times are on offer, so the picker is
+    // rebuilt from scratch. Anything already chosen is dropped: a time that
+    // suited a single session may not survive as the start of a run, and
+    // silently keeping it is how someone ends up booked into a slot the
+    // package rules just rejected.
+    Array.prototype.forEach.call(document.querySelectorAll(".plan-radio"), function (r) {
+      r.addEventListener("change", function () {
+        if (!r.checked) return;
+        resetPicker();
+        renderSlots();
+        clearError(document.getElementById("session-field"));
+        track("booking_plan", { plan: r.value });
       });
     });
     window.addEventListener("hashchange", openFromHash);
