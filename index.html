@@ -482,7 +482,38 @@
               <section class="bk-step" data-step="1" aria-label="Step 1 of 3">
                 <div class="panel-book">
                   <h3 class="booking-h" data-step-heading tabindex="-1">Pick a time</h3>
-                  <p class="block-sub">All times are Newcastle time, and every session runs for one hour in your own home. Choose a day, then a time.</p>
+                  <p class="block-sub">All times are Newcastle time, and every session runs for one hour in your own home. Choose how often, then a day and a time.</p>
+
+                  <!-- The plan changes what the picker offers, not just what
+                       gets written on the enquiry: choosing the package makes
+                       js/schedule.js show only start times that are free
+                       every week of the run. The number of sessions is
+                       written in by script from packageSessions in
+                       js/availability.js — don't hard-code it here. The
+                       PRICES below are hand-maintained; see the README. -->
+                  <fieldset class="radio-set plan-set">
+                    <legend>How often?</legend>
+                    <div class="plan-grid">
+                      <label class="plan-option">
+                        <input type="radio" name="plan" id="plan-single" class="plan-radio"
+                               value="Single session" checked />
+                        <span class="plan-body">
+                          <span class="plan-name">Single session</span>
+                          <span class="plan-price">$60</span>
+                          <span class="plan-detail">One hour, one-on-one. The easiest way to try it.</span>
+                        </span>
+                      </label>
+                      <label class="plan-option">
+                        <input type="radio" name="plan" id="plan-weekly" class="plan-radio"
+                               value="Continuous Adventure (weekly)" />
+                        <span class="plan-body">
+                          <span class="plan-name">Continuous Adventure</span>
+                          <span class="plan-price">$200 <span class="plan-per">per month</span></span>
+                          <span class="plan-detail"><span data-package-count>4</span> weekly sessions at the same time each week, so the story carries on.</span>
+                        </span>
+                      </label>
+                    </div>
+                  </fieldset>
 
                   <div id="session-field" class="field">
                     <div id="slots" aria-busy="true" aria-live="polite">
@@ -499,7 +530,7 @@
 
                 <div class="panel-waitlist">
                   <h3 class="booking-h" data-step-heading tabindex="-1">Join the waitlist for a group</h3>
-                  <p class="block-sub">Tell us what you're after and we'll be in touch the moment a table opens up./p>
+                  <p class="block-sub">Tell us what you're after and we'll be in touch the moment a table opens up.</p>
 
                   <div class="field">
                     <label for="availability">Which days and times usually suit? <span class="optional">optional</span></label>
