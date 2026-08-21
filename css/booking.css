@@ -171,6 +171,81 @@
 .js-bk-steps .bk-step + .bk-step { margin-top: 0; }
 
 /* ---- 4. Time picker ------------------------------------------------------ */
+
+/* Single session vs Continuous Adventure. Two cards rather than the pill
+   switch used for book/waitlist: these carry a price and a line of detail,
+   which won't fit in a pill, and the choice is a considered one rather than
+   a change of tab. Stacked on phones, side by side from 480px. */
+.plan-set { margin-bottom: 1.5rem; }
+.plan-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.6rem;
+}
+.plan-option {
+  position: relative;
+  display: block;
+  cursor: pointer;
+  border-radius: var(--bk-radius-md);
+  border: 2px solid var(--border);
+  background: var(--card);
+  padding: 0.9rem 1rem;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+.plan-option:hover { border-color: var(--primary); }
+
+/* Kept in the tab order and reachable, just not drawn — same reasoning as
+   .mode-radio above. */
+.plan-radio { position: absolute; width: 1px; height: 1px; opacity: 0; }
+
+.plan-body { display: grid; grid-template-columns: 1fr auto; gap: 0.15rem 0.75rem; }
+.plan-name {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  line-height: 1.25;
+  color: var(--foreground);
+}
+.plan-price {
+  grid-column: 2;
+  grid-row: 1;
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  white-space: nowrap;
+  color: var(--primary);
+}
+.plan-per { font-family: var(--font-body); font-size: 0.75rem; font-weight: 700; color: var(--muted-foreground); }
+.plan-detail {
+  grid-column: 1 / -1;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+}
+
+.plan-option:has(.plan-radio:checked) {
+  border-color: var(--primary);
+  background: color-mix(in oklab, var(--primary) 8%, var(--card));
+}
+.plan-option:has(.plan-radio:checked) .plan-name::before { content: "\2713  "; color: var(--primary); }
+.plan-option:has(.plan-radio:focus-visible) {
+  outline: 3px solid var(--foreground);
+  outline-offset: 2px;
+}
+
+/* The dates in a booked run, listed under the summary line. */
+.run-dates {
+  display: block;
+  margin-top: 0.3rem;
+  margin-bottom: 0.3rem;
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: var(--foreground);
+}
+
+@media (min-width: 480px) {
+  .plan-grid { grid-template-columns: 1fr 1fr; }
+}
 .slots-loading, .slots-empty {
   border-radius: var(--bk-radius-md);
   border: 2px dashed var(--border);
