@@ -1045,7 +1045,12 @@ summary:focus-visible {
 .price-note { margin-bottom: 1.25rem; font-size: 0.8125rem; color: var(--muted-foreground); }
 .price-list {
   list-style: none;
-  margin: 0 0 1.5rem;
+  /* The dashed rule used to sit flush against whatever came before it. That
+     was invisible on the two cards with a price-amount/price-note above it
+     (their own margins created the gap by accident) but on a card without a
+     price — like Group Waitlist — the rule landed right against the
+     description text. A small top margin here fixes it everywhere at once. */
+  margin: 0.75rem 0 1.5rem;
   padding: 0;
   display: flex;
   flex-direction: column;
